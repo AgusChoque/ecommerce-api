@@ -85,8 +85,31 @@ export class ProductsRepository {
             imgUrl: "https://example.com/router-wifi6.jpg"
         }
     ];
+    private id: number = 11;
 
-    getAllProducts (): Product[] {
+    find (): Product[] {
         return this.products;
     };
+
+    findOneById (id: number): Product {
+        const product: Product | undefined = this.products.filter((prod: Product) => prod.id === id)[0];
+        if(product) return product;
+        else throw Error ("Product doesn't found.");
+    }
+
+    create (product: Omit<Product, "id">): Product {
+        const newProduct: Product = {id: this.id, ... product};
+        this.id++;
+        return newProduct;
+    }
+
+    save (product: Product): void {
+        this.products = this.products.filter((prod: Product) => prod.id !== product.id);
+        this.products.push(product);
+    }
+
+    delete (id: number): void {
+        this.products = this.products.filter((product: Product) => product.id !== id);
+    }
+
 };

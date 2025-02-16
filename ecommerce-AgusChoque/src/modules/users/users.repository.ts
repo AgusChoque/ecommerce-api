@@ -105,8 +105,30 @@ export class UsersRepository {
             city: "Medellín"
         }
     ];
+    private id = 11;
 
-    getAllUsers (): User[] {
+    find(): User[] {
         return this.users;
-    }
+    };
+
+    findById(id: number): User {
+        const userById: User | undefined = this.users.filter(user => { if(user.id === id) {return user}})[0];
+        if(userById) return userById;
+        else throw Error("User dont found.");
+    };
+
+    create(user: Omit<User, "id">): User {
+        const newUser: User = {id: this.id, ...user};
+        this.id++;
+        return newUser;
+    };
+
+    save(newUser: User): void {
+        this.users = this.users.filter((user: User) => user.id !== newUser.id);
+        this.users.push(newUser);
+    };
+
+    delete(id: number): void {
+        this.users = this.users.filter((user: User) => user.id !== id);
+    };
 };
