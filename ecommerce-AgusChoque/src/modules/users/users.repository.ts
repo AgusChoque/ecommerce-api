@@ -117,6 +117,11 @@ export class UsersRepository {
         else throw Error("User dont found.");
     };
 
+    findByEmail(email:string): User {
+        const userByEmail: User = this.users.filter(user => { if(user.email === email) {return user} })[0];
+        return userByEmail;
+    }
+
     create(user: Omit<User, "id">): User {
         const newUser: User = {id: this.id, ...user};
         this.id++;

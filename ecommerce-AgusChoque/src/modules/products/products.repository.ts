@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Product } from "./entities/Product.entity";
+import splitArray from "src/helpers/splitArray";
 
 @Injectable()
 export class ProductsRepository {
@@ -87,8 +88,9 @@ export class ProductsRepository {
     ];
     private id: number = 11;
 
-    find (): Product[] {
-        return this.products;
+    findByPage (page: number, limit: number): Product[] {
+        const splited: Product[][] = splitArray(this.products, limit);
+        return splited[page-1];
     };
 
     findOneById (id: number): Product {

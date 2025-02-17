@@ -1,9 +1,11 @@
-import { Controller, Delete, Get, HttpCode, Param, Post, Put, Req } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/User.entity';
 import { Request } from 'express';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UsersController {
     constructor(private readonly usersService: UsersService) {};
 
@@ -21,6 +23,7 @@ export class UsersController {
 
     @HttpCode(201)
     @Post()
+    @UseGuards()
     createUser (@Req() req: Request):number {
         return this.usersService.createUser(req.body);
     };

@@ -7,8 +7,8 @@ import updateProductDto from 'src/dtos/updateProductDto.interface';
 export class ProductsService {
     constructor(private productsRepository: ProductsRepository) {}
 
-    getAllProducts ():Product[] {
-        return this.productsRepository.find();
+    getAllProducts (page: number, limit: number):Product[] {
+        return this.productsRepository.findByPage(page, limit);
     };
 
     getProductById (id: number): Product {
