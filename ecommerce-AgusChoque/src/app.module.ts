@@ -4,6 +4,8 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -23,7 +25,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       synchronize: true,
     })
   })
-    , ProductsModule, UsersModule, AuthModule],
+    , ProductsModule, UsersModule, AuthModule, CategoriesModule, OrdersModule],
   controllers: [],
   providers: [],
 })
