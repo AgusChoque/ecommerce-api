@@ -1,13 +1,15 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ProductsController } from './products.controller';
 import { ProductsService } from './products.service';
-import { ProductsRepository } from './products.repository';
 import { CreateProductMiddleware } from 'src/middlewares/createProduct.middleware';
 import { UpdateProductMiddleware } from 'src/middlewares/updateProduct.middleware';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Product } from './entities/Product.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Product])],
   controllers: [ProductsController],
-  providers: [ProductsService, ProductsRepository]
+  providers: [ProductsService]
 })
 export class ProductsModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {

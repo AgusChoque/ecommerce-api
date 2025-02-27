@@ -6,24 +6,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import typeorm from './config/typeorm';
 
 @Module({
   imports: [ConfigModule.forRoot({
     isGlobal: true,
-    envFilePath: ".env.development"
+    load: [typeorm]
   }), 
   TypeOrmModule.forRootAsync({
     inject: [ConfigService],
-    useFactory: (configService: ConfigService) => ({
-      type: "postgres",
-      database: configService.get("DB_NAME"),
-      host: configService.get("DB_HOST"),
-      port: configService.get("DB_PORT"),
-      username: configService.get("DB_USERNAME"),
-      password: configService.get("DB_PASSWORD"),
-      entities: [],
-      synchronize: true,
-    })
+    useFactory: (configService: ConfigService) => configService.get("typeorm")!,
   })
     , ProductsModule, UsersModule, AuthModule, CategoriesModule, OrdersModule],
   controllers: [],

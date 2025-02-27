@@ -1,8 +1,11 @@
 import { Category } from "src/modules/categories/entities/Category.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { OrderDetail } from "src/modules/orders/entities/OrderDetail.entity";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
-@Entity()
+@Entity({
+    name: "PRODUCTS"
+})
 export class Product {
     @PrimaryGeneratedColumn("uuid")
     id:string = uuid()
@@ -10,7 +13,8 @@ export class Product {
     @Column({
         nullable: false,
         type: "varchar",
-        length: 50
+        length: 50,
+        unique: true
     })
     name: string
 
@@ -34,10 +38,19 @@ export class Product {
     })
     stock: number
 
-    @Column("text")
+    @Column({
+        type: "text",
+        nullable: false
+    })
     imgUrl: string
 
-    @ManyToOne(() => Category)
-    category_id: Category
+    @ManyToOne(() => Category, (category) => category.products)
+    @JoinColumn({
+        name: "category_id"
+    })
+    category: Category
+
+    @ManyToMany(() => OrderDetail, (orderDetail) => orderDetail.products)
+    orderDetails: OrderDetail[]
 
 };

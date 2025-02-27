@@ -1,8 +1,10 @@
 import { Order } from "src/modules/orders/entities/Order.entity";
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
-@Entity()
+@Entity({
+    name: "USERS"
+})
 export class User {
     @PrimaryGeneratedColumn("uuid")
     id:string = uuid()
@@ -17,18 +19,21 @@ export class User {
     @Column({
         nullable: false,
         type: "varchar",
-        length: 50
+        length: 50,
+        unique: true
     })
     email: string
 
     @Column({
         nullable: false,
         type: "varchar",
-        length: 20
+        length: 50
     })
     password: string
 
-    @Column("int")
+    @Column({
+        type: "bigint"
+    })
     phone: number
     
     @Column("text")
@@ -46,7 +51,10 @@ export class User {
     })
     city?: string | undefined
 
-    @OneToMany(() => Order, (order) => order.user_id)
-    orders_id: Order[]
+    @OneToMany(() => Order, (order) => order.user)
+    @JoinColumn({
+        name: "orders_id"
+    })
+    orders: Order[]
     
 };

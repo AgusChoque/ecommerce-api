@@ -1,34 +1,36 @@
 import { Injectable } from '@nestjs/common';
-import { UsersRepository } from './users.repository';
 import { User } from './entities/User.entity';
 import updateUserDto from 'src/dtos/updateUserDto.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class UsersService {
-    constructor(private usersRepository: UsersRepository) {}
+    constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
 
-    getAllUsers (): Omit<User, "password">[] {
-        const users: Omit<User, "password">[] = this.usersRepository.find().map((user: User) => {return {...user, password: undefined}});
-        return users;
+    async getAllUsers (): Promise<Omit<User, "password">[]> {
+        const users: Omit<User, "password">[] = await this.usersRepository.find()
+        return users.map((user: User) => {return {...user, password: undefined}});;
     };
 
-    getUserById(id: number): Omit<User, "password"> {
-        const user: User = this.usersRepository.findById(id);
-        const newUser = {...user, password: undefined};
-        return newUser;
+    async getUserById(id: string): Promise<Omit<User, "password">> {
+        const user: User | null = await this.usersRepository.findOneBy({id});
+        if ( user ) {
+            const newUser = {...user, password: undefined};
+            return newUser;
+        } else {
+            throw new Error("User don't found.");
+        }
     };
 
-    createUser(user: Omit<User, "id">): number {
-        const newUser: User = this.usersRepository.create(user);
+    async createUser(user: Omit<User, "id">): Promise<string> {
+        const newUser: User = await this.usersRepository.create(user);
         this.usersRepository.save(newUser);
         return newUser.id;
     };
 
-    updateUser({id, newData}: updateUserDto): number {
-        let user = this.usersRepository.findById(id);
-        user = {...user, ...newData};
-        this.usersRepository.save(user);
-        return id;
+    updateUser({id, newData}: updateUserDto): void {
+
     };
 
     deleteUser(id: number): number {

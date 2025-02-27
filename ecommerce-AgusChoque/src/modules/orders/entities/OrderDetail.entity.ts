@@ -3,7 +3,9 @@ import { v4 as uuid } from "uuid";
 import { Order } from "./Order.entity";
 import { Product } from "src/modules/products/entities/Product.entity";
 
-@Entity()
+@Entity({
+    name: "ORDER_DETAILS"
+})
 export class OrderDetail {
     @PrimaryGeneratedColumn("uuid")
     id: string = uuid()
@@ -16,12 +18,16 @@ export class OrderDetail {
     })
     price: number
 
-    @OneToOne(() => Order)
-    @JoinColumn()
-    order_id: Order
+    @OneToOne(() => Order, (order) => order.orderDetail)
+    @JoinColumn({
+        name: "order_id"
+    })
+    order: Order
 
-    @ManyToMany(() => Product)
-    @JoinTable()
+    @ManyToMany(() => Product, (product) => product.orderDetails)
+    @JoinTable({
+        name: "ORDER_DETAILS_PRODUCTS"
+    })
     products: Product[]
 
 };

@@ -1,35 +1,45 @@
 import { Injectable } from '@nestjs/common';
-import { ProductsRepository } from './products.repository';
 import { Product } from './entities/Product.entity';
 import updateProductDto from 'src/dtos/updateProductDto.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
-    constructor(private productsRepository: ProductsRepository) {}
+    constructor(@InjectRepository(Product) private productsRepository: Repository<Product>) {}
 
-    getAllProducts (page: number, limit: number):Product[] {
-        return this.productsRepository.findByPage(page, limit);
+    async getAllProducts (page: number, limit: number): Promise<Product[]> {
+        return await this.productsRepository.find();
     };
 
-    getProductById (id: number): Product {
-        return this.productsRepository.findOneById(id);
+    async getProductById (id: string): Promise<Product> {
+        const product: Product | null = await this.productsRepository.findOneBy({id});
+        if ( product ) {
+            return product;
+        } else {
+            throw new Error("Product doesn't found.");
+        }
     };
 
-    createProduct (newProduct: Omit<Product, "id">): number {
-        const product: Product = this.productsRepository.create(newProduct);
+    async createProduct (newProduct: Omit<Product, "id">): Promise<string> {
+        const product: Product = await this.productsRepository.create(newProduct);
         this.productsRepository.save(product);
         return product.id;
     };
 
-    updateProduct ({id, newData}: updateProductDto): number {
-        let product: Product = this.productsRepository.findOneById(id);
-        product = {...product, ... newData};
-        this.productsRepository.save(product);
-        return id;
+    async updateProduct ({id, newData}: updateProductDto): Promise<string> {
+        let product: Product | null = await this.productsRepository.findOneBy({id});
+        if (product) {
+            product = {...product, ... newData};
+            this.productsRepository.save(product);
+            return id;
+        } else {
+            throw new Error("Product doesn't found.");
+        }
     };
 
-    deleteProduct (id: number): number {
-        this.productsRepository.delete(id);
+    async deleteProduct (id: string): Promise<string> {
+        await this.productsRepository.delete(id);
         return id;
     };
 

@@ -1,10 +1,10 @@
 interface updateProductDto {
-    id: number,
+    id: string,
     newData: {
         name?: string
         description?: string
         price?: number
-        stock?: boolean
+        stock?: number
         imgUrl?: string
     }
 };

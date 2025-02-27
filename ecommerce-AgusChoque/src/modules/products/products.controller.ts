@@ -12,32 +12,32 @@ export class ProductsController {
     @HttpCode(200)
     @Get()
     @UseGuards()
-    getProducts (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Product[] {
-        return this.productsService.getAllProducts(Number(page), Number(limit));
+    async getProducts (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<Product[]> {
+        return await this.productsService.getAllProducts(Number(page), Number(limit));
     };
 
     @HttpCode(200)
     @Get(":id")
     @UseGuards()
-    getProductById (@Param("id") id: string): Product {
-        return this.productsService.getProductById(Number(id));
+    async getProductById (@Param("id") id: string): Promise<Product> {
+        return await this.productsService.getProductById(id);
     }
 
     @HttpCode(201)
     @Post()
-    createProduct (@Req() req: Request): number {
-        return this.productsService.createProduct(req.body);
+    async createProduct (@Req() req: Request): Promise<string> {
+        return await this.productsService.createProduct(req.body);
     }
 
     @HttpCode(200)
     @Put(":id")
-    updateProduct (@Param("id") id: string, @Req() req: Request): number {
-        return this.productsService.updateProduct({id: Number(id), newData: req.body});
+    async updateProduct (@Param("id") id: string, @Req() req: Request): Promise<string> {
+        return await this.productsService.updateProduct({id: id, newData: req.body});
     }
 
     @HttpCode(200)
     @Delete(":id")
-    deleteProduct (@Param("id") id: string): number {
-        return this.productsService.deleteProduct(Number(id));
+    async deleteProduct (@Param("id") id: string): Promise<string> {
+        return await this.productsService.deleteProduct(id);
     }
 }

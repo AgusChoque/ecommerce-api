@@ -11,26 +11,26 @@ export class UsersController {
 
     @HttpCode(200)
     @Get()
-    getUsers ():Omit<User, "password">[] {
-        return this.usersService.getAllUsers();
+    async getUsers ():Promise<Omit<User, "password">[]> {
+        return await this.usersService.getAllUsers();
     };
 
     @HttpCode(200)
     @Get(":id")
-    getUserById (@Param("id") id: string):Omit<User, "password">  {
-        return this.usersService.getUserById(Number(id));
+    async getUserById (@Param("id") id: string):Promise<Omit<User, "password">>  {
+        return await this.usersService.getUserById(id);
     };
 
     @HttpCode(201)
     @Post()
     @UseGuards()
-    createUser (@Req() req: Request):number {
-        return this.usersService.createUser(req.body);
+    async createUser (@Req() req: Request): Promise<string> {
+        return await this.usersService.createUser(req.body);
     };
 
     @HttpCode(200)
     @Put(":id")
-    updateUser (@Param("id") id: string, @Req() req: Request): number {
+    updateUser (@Param("id") id: string, @Req() req: Request): void {
         return this.usersService.updateUser({id:Number(id), newData: req.body});
     };
 
