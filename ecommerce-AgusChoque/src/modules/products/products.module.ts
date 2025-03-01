@@ -5,9 +5,10 @@ import { CreateProductMiddleware } from 'src/middlewares/createProduct.middlewar
 import { UpdateProductMiddleware } from 'src/middlewares/updateProduct.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/Product.entity';
+import { Category } from '../categories/entities/Category.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Product])],
+  imports: [TypeOrmModule.forFeature([Product, Category])],
   controllers: [ProductsController],
   providers: [ProductsService]
 })

@@ -3,22 +3,30 @@ import { Product } from './entities/Product.entity';
 import updateProductDto from 'src/dtos/updateProductDto.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as data from "../../data.json";
+import { Category } from '../categories/entities/Category.entity';
 
 @Injectable()
 export class ProductsService {
-    constructor(@InjectRepository(Product) private productsRepository: Repository<Product>) {}
+    constructor(
+        @InjectRepository(Product) private productsRepository: Repository<Product>,
+        @InjectRepository(Category) private categoryRepository: Repository<Category>
+    ) {};
 
     async getAllProducts (page: number, limit: number): Promise<Product[]> {
-        return await this.productsRepository.find();
+        const start = (page - 1) * limit;
+        const end = start + limit;
+
+        const products: Product[] = await this.productsRepository.find({relations:{ category: true }});
+        if ( !products.length ) throw new Error("Products doesn't found.");
+
+        return products.slice(start, end);
     };
 
     async getProductById (id: string): Promise<Product> {
         const product: Product | null = await this.productsRepository.findOneBy({id});
-        if ( product ) {
-            return product;
-        } else {
-            throw new Error("Product doesn't found.");
-        }
+        if ( !product ) throw new Error("Product doesn't found.");
+        return product;
     };
 
     async createProduct (newProduct: Omit<Product, "id">): Promise<string> {
@@ -29,18 +37,35 @@ export class ProductsService {
 
     async updateProduct ({id, newData}: updateProductDto): Promise<string> {
         let product: Product | null = await this.productsRepository.findOneBy({id});
-        if (product) {
-            product = {...product, ... newData};
-            this.productsRepository.save(product);
-            return id;
-        } else {
-            throw new Error("Product doesn't found.");
-        }
+        if (!product) throw new Error("Product doesn't found.");
+        
+        product = {...product, ... newData};
+        this.productsRepository.save(product);
+        return id;
     };
 
     async deleteProduct (id: string): Promise<string> {
         await this.productsRepository.delete(id);
         return id;
     };
+
+    async seederProducts (): Promise<string> {
+        const categories = await this.categoryRepository.find();
+
+        await data.map(async (product) => {
+            const category: Category | undefined = categories.find(element => element.name === product.category);
+            const newProduct: Product = this.productsRepository.create({...product, category});
+
+            await this.productsRepository
+            .createQueryBuilder()
+            .insert()
+            .into(Product)
+            .values(newProduct)
+            .orUpdate(["description", "price", "imgUrl", "stock"], ["name"])
+            .execute();
+        });
+
+        return "All products loaded.";
+    }
 
 }

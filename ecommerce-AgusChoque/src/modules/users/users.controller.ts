@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpCode, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/User.entity';
 import { Request } from 'express';
@@ -11,8 +11,8 @@ export class UsersController {
 
     @HttpCode(200)
     @Get()
-    async getUsers ():Promise<Omit<User, "password">[]> {
-        return await this.usersService.getAllUsers();
+    async getUsers (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<Omit<User, "password">[]> {
+        return await this.usersService.getAllUsers(Number(page), Number(limit));
     };
 
     @HttpCode(200)
@@ -30,13 +30,13 @@ export class UsersController {
 
     @HttpCode(200)
     @Put(":id")
-    updateUser (@Param("id") id: string, @Req() req: Request): void {
-        return this.usersService.updateUser({id:Number(id), newData: req.body});
+    async updateUser (@Param("id") id: string, @Req() req: Request): Promise<string> {
+        return await this.usersService.updateUser({id, newData: req.body});
     };
 
     @HttpCode(200)
     @Delete(":id")
-    deleteUser (@Param("id") id: string): number {
-        return this.usersService.deleteUser(Number(id))
+    async deleteUser (@Param("id") id: string): Promise<string> {
+        return await this.usersService.deleteUser(id);
     };
 }

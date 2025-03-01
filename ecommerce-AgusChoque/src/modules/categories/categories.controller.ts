@@ -7,7 +7,7 @@ export class CategoriesController {
     constructor (private readonly categoriesService: CategoriesService) {};
 
     @Get()
-    async getAllCategories (): Promise<Category[]> {
+    async getCategories (): Promise<Category[]> {
         return await this.categoriesService.getCategories();
     }
 

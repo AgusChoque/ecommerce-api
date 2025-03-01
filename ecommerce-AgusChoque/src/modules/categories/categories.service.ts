@@ -13,37 +13,15 @@ export class CategoriesService {
     }
 
     async addCategoriesService () {
-        const categories: string[] = data.map((product) => { return product.category });
-        const uniqueCategories: string[] = [... new Set (categories)];
-        
-        const dbCategories: string[] = (await this.categoryRepository.find()).map((category: Category) => { return category.name })
-        const areEquals = JSON.stringify(uniqueCategories.sort()) === JSON.stringify(dbCategories.sort());
-
-        if( !dbCategories.length ) {
-            await uniqueCategories.map(async (name) => {
-                const newCategory: Category = await this.categoryRepository.create({ name });
-                await this.categoryRepository.save(newCategory);
-            });
-        } else if ( !areEquals ) {
-            const added: string[] = uniqueCategories.filter((name) => { !dbCategories.includes(name) });
-            const deleted: string[] = dbCategories.filter((name) => { !uniqueCategories.includes(name) });
-
-            if (added.length) {
-                await added.map(async (name) => {
-                    const newCategory: Category = await this.categoryRepository.create({ name });
-                    await this.categoryRepository.save(newCategory);
-                });
-            };
-            if (deleted.length) {
-                await deleted.map(async (name) => {
-                    const deletedCategory: Category | null = await this.categoryRepository.findOneBy({ name });
-                    if( deletedCategory ) {
-                        await this.categoryRepository.delete(deletedCategory.id);
-                    };
-                });
-            };
-        };
-
+        data.map(async (element) => {
+            this.categoryRepository
+            .createQueryBuilder()
+            .insert()
+            .into(Category)
+            .values({ name: element.category })
+            .orIgnore("name")
+            .execute()
+        })
         return "All categories loaded.";
     };
 

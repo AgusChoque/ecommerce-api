@@ -8,9 +8,12 @@ import { Repository } from 'typeorm';
 export class UsersService {
     constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
 
-    async getAllUsers (): Promise<Omit<User, "password">[]> {
-        const users: Omit<User, "password">[] = await this.usersRepository.find()
-        return users.map((user: User) => {return {...user, password: undefined}});;
+    async getAllUsers (page: number, limit: number): Promise<Omit<User, "password">[]> {
+        const start = (page - 1) * limit;
+        const end = start + limit;
+
+        const users: User[] = (await this.usersRepository.find()).slice(start, end);
+        return users.map(user => { return {...user, password: undefined} });
     };
 
     async getUserById(id: string): Promise<Omit<User, "password">> {
@@ -29,12 +32,18 @@ export class UsersService {
         return newUser.id;
     };
 
-    updateUser({id, newData}: updateUserDto): void {
+    async updateUser({id, newData}: updateUserDto): Promise<string> {
+        let user: User | null = await this.usersRepository.findOneBy({id});
+        
+        if( !user ) throw new Error("User don't found.");
+        user = {...user, ...newData};
+        await this.usersRepository.save(user);
 
+        return user.id;
     };
 
-    deleteUser(id: number): number {
-        this.usersRepository.delete(id);
+    async deleteUser(id: string): Promise<string> {
+        await this.usersRepository.delete(id);
         return id;
     };
 }

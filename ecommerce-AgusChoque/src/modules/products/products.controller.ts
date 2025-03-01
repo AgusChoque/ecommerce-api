@@ -5,7 +5,6 @@ import { Request } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('products')
-@UseGuards(AuthGuard)
 export class ProductsController {
     constructor(private readonly productsService:ProductsService) {};
 
@@ -15,6 +14,12 @@ export class ProductsController {
     async getProducts (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<Product[]> {
         return await this.productsService.getAllProducts(Number(page), Number(limit));
     };
+
+    @HttpCode(200)
+    @Get("seeder")
+    async addProducts () {
+        return await this.productsService.seederProducts();
+    }
 
     @HttpCode(200)
     @Get(":id")
