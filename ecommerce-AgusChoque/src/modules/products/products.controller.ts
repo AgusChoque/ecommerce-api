@@ -1,29 +1,30 @@
-import { Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, SetMetadata, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './entities/Product.entity';
 import { Request } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('products')
 export class ProductsController {
     constructor(private readonly productsService:ProductsService) {};
 
+    @SetMetadata("isPublic", true)
     @HttpCode(200)
     @Get()
-    @UseGuards()
     async getProducts (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<Product[]> {
         return await this.productsService.getAllProducts(Number(page), Number(limit));
     };
 
-    @HttpCode(200)
+    @HttpCode(201)
     @Get("seeder")
     async addProducts () {
         return await this.productsService.seederProducts();
     }
-
+    
+    @SetMetadata("isPublic", true)
     @HttpCode(200)
     @Get(":id")
-    @UseGuards()
     async getProductById (@Param("id") id: string): Promise<Product> {
         return await this.productsService.getProductById(id);
     }

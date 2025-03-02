@@ -13,7 +13,6 @@ const configDb = {
     migration: ["dist/migrations/*{.ts,.js}"],
     autoLoadEntities: true,
     synchronize: true,
-    logging: true,
     dropSchema: true
 };
 

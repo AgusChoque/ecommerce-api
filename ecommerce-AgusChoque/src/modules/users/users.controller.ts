@@ -1,11 +1,11 @@
-import { Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, SetMetadata, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/User.entity';
 import { Request } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
 
-@Controller('users')
 @UseGuards(AuthGuard)
+@Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {};
 
@@ -21,9 +21,9 @@ export class UsersController {
         return await this.usersService.getUserById(id);
     };
 
+    @SetMetadata("isPublic", true)
     @HttpCode(201)
     @Post()
-    @UseGuards()
     async createUser (@Req() req: Request): Promise<string> {
         return await this.usersService.createUser(req.body);
     };
