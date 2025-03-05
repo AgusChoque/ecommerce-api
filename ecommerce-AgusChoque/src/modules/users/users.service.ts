@@ -12,12 +12,12 @@ export class UsersService {
         const start = (page - 1) * limit;
         const end = start + limit;
 
-        const users: User[] = (await this.usersRepository.find()).slice(start, end);
+        const users: User[] = (await this.usersRepository.find({relations: { orders: true }})).slice(start, end);
         return users.map(user => { return {...user, password: undefined} });
     };
 
     async getUserById(id: string): Promise<Omit<User, "password">> {
-        const user: User | null = await this.usersRepository.findOneBy({id});
+        const user: User | null = await this.usersRepository.findOne({where: { id }, relations: { orders: true }});
         if ( user ) {
             const newUser = {...user, password: undefined};
             return newUser;
