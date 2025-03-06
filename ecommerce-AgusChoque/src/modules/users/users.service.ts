@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { User } from './entities/User.entity';
-import updateUserDto from 'src/dtos/updateUserDto.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateUserDto } from './dtos/createUser.dto';
+import { UpdateUserDto } from './dtos/updateUser.dto';
 
 @Injectable()
 export class UsersService {
@@ -26,13 +27,13 @@ export class UsersService {
         }
     };
 
-    async createUser(user: Omit<User, "id">): Promise<string> {
+    async createUser(user: CreateUserDto): Promise<string> {
         const newUser: User = await this.usersRepository.create(user);
         this.usersRepository.save(newUser);
         return newUser.id;
     };
 
-    async updateUser({id, newData}: updateUserDto): Promise<string> {
+    async updateUser({id, newData}: UpdateUserDto): Promise<string> {
         let user: User | null = await this.usersRepository.findOneBy({id});
         
         if( !user ) throw new Error("User don't found.");

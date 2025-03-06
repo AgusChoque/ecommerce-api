@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import signinDto from 'src/dtos/signinDto.interface';
 import { User } from '../users/entities/User.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { LoginUserDto } from './dtos/loginUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,7 +12,7 @@ export class AuthService {
         return "Auth.";
     };
 
-    async signin ({email, password}: signinDto): Promise<string> {
+    async signin ({email, password}: LoginUserDto): Promise<string> {
         const user: User | null = await this.usersRepository.findOneBy({email});
         if(!user) throw Error("Email or password incorrect.");
         else if (user.password !== password) throw Error("Email or password incorrect.");

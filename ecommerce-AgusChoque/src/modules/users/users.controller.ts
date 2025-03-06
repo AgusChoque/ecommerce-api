@@ -1,8 +1,8 @@
-import { Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, SetMetadata, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, SetMetadata, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/User.entity';
-import { Request } from 'express';
 import { AuthGuard } from '../auth/auth.guard';
+import { CreateUserDto } from './dtos/createUser.dto';
 
 @UseGuards(AuthGuard)
 @Controller('users')
@@ -17,21 +17,21 @@ export class UsersController {
 
     @HttpCode(200)
     @Get(":id")
-    async getUserById (@Param("id") id: string):Promise<Omit<User, "password">>  {
+    async getUserById (@Param("id") id: string): Promise<Omit<User, "password">>  {
         return await this.usersService.getUserById(id);
     };
 
     @SetMetadata("isPublic", true)
     @HttpCode(201)
     @Post()
-    async createUser (@Req() req: Request): Promise<string> {
-        return await this.usersService.createUser(req.body);
+    async createUser (@Body() createUserDto: CreateUserDto): Promise<string> {
+        return await this.usersService.createUser(createUserDto);
     };
 
     @HttpCode(200)
     @Put(":id")
-    async updateUser (@Param("id") id: string, @Req() req: Request): Promise<string> {
-        return await this.usersService.updateUser({id, newData: req.body});
+    async updateUser (@Param("id") id: string, @Body() newData: CreateUserDto): Promise<string> {
+        return await this.usersService.updateUser({id, newData});
     };
 
     @HttpCode(200)

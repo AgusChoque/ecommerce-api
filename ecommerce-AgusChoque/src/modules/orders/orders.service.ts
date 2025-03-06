@@ -3,10 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/Order.entity';
 import { Repository } from 'typeorm';
 import { OrderDetail } from './entities/OrderDetail.entity';
-import { addOrderDto } from './dto/addOrderDto';
 import { User } from '../users/entities/User.entity';
 import { Product } from '../products/entities/Product.entity';
-import { elementAt } from 'rxjs';
+import { CreateOrderDto } from './dtos/createOrder.dto';
 
 @Injectable()
 export class OrdersService {
@@ -34,7 +33,7 @@ export class OrdersService {
         return order;
     };
 
-    async addOrder ({userId, products}: addOrderDto) {
+    async addOrder ({ userId, products }: CreateOrderDto) {
         const user: User | null = await this.usersRepository.findOneBy({id: userId});
         if( !user ) throw new Error("User not found.");
 

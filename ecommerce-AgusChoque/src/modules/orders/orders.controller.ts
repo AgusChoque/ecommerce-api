@@ -1,7 +1,7 @@
-import { Controller, Get, HttpCode, Param, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Param, Post } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { Request } from 'express';
 import { Order } from './entities/Order.entity';
+import { CreateOrderDto } from './dtos/createOrder.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -15,8 +15,8 @@ export class OrdersController {
     
     @HttpCode(201)
     @Post()
-    async createOrder (@Req() req: Request) {
-        return await this.ordersService.addOrder(req.body);
+    async createOrder (@Body() createOrderDto: CreateOrderDto) {
+        return await this.ordersService.addOrder(createOrderDto);
     };
 
 };
