@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './entities/Product.entity';
-import updateProductDto from 'src/dtos/updateProductDto.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as data from "../../data.json";
 import { Category } from '../categories/entities/Category.entity';
+import { updateProductDto } from './dto/updateProduct.dto';
 
 @Injectable()
 export class ProductsService {
@@ -18,14 +18,14 @@ export class ProductsService {
         const end = start + limit;
 
         const products: Product[] = await this.productsRepository.find({relations:{ category: true }});
-        if ( !products.length ) throw new Error("Products doesn't found.");
+        if ( !products.length ) throw new NotFoundException("Products not found.");
 
         return products.slice(start, end);
     };
 
     async getProductById (id: string): Promise<Product> {
         const product: Product | null = await this.productsRepository.findOneBy({id});
-        if ( !product ) throw new Error("Product doesn't found.");
+        if ( !product ) throw new NotFoundException("Product not found.");
         return product;
     };
 
@@ -37,7 +37,7 @@ export class ProductsService {
 
     async updateProduct ({id, newData}: updateProductDto): Promise<string> {
         let product: Product | null = await this.productsRepository.findOneBy({id});
-        if (!product) throw new Error("Product doesn't found.");
+        if (!product) throw new NotFoundException("Product not found.");
         
         product = {...product, ... newData};
         this.productsRepository.save(product);

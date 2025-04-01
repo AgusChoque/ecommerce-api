@@ -9,10 +9,10 @@ export class CategoriesController {
     @Get()
     async getCategories (): Promise<Category[]> {
         return await this.categoriesService.getCategories();
-    }
+    };
 
     @Get("seeder")
     addCategories() {
         return this.categoriesService.addCategoriesService();
-    }
+    };
 }

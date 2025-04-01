@@ -3,7 +3,6 @@ import { CreateUserDto } from "./createUser.dto";
 
 export class UpdateUserDto {
     @IsNotEmpty()
-    @IsString()
     @IsUUID()
     id: string;
 

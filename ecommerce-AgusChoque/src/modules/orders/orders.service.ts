@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Order } from './entities/Order.entity';
 import { Repository } from 'typeorm';
@@ -28,14 +28,14 @@ export class OrdersService {
                 orderDetail: true
             }
         });
-        if(!order) throw new Error("Order doesn't found.");
+        if(!order) throw new NotFoundException("Order not found.");
         
         return order;
     };
 
     async addOrder ({ userId, products }: CreateOrderDto) {
         const user: User | null = await this.usersRepository.findOneBy({id: userId});
-        if( !user ) throw new Error("User not found.");
+        if( !user ) throw new NotFoundException("User not found.");
 
         const now = new Date();
         const order = new Order();

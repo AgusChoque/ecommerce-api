@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpCode, Param, Post, Put, Query, Req, SetMetadata, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, Req, SetMetadata, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './entities/Product.entity';
 import { Request } from 'express';
@@ -25,7 +25,7 @@ export class ProductsController {
     @SetMetadata("isPublic", true)
     @HttpCode(200)
     @Get(":id")
-    async getProductById (@Param("id") id: string): Promise<Product> {
+    async getProductById (@Param("id", ParseUUIDPipe) id: string): Promise<Product> {
         return await this.productsService.getProductById(id);
     }
 
@@ -37,13 +37,13 @@ export class ProductsController {
 
     @HttpCode(200)
     @Put(":id")
-    async updateProduct (@Param("id") id: string, @Req() req: Request): Promise<string> {
+    async updateProduct (@Param("id", ParseUUIDPipe) id: string, @Req() req: Request): Promise<string> {
         return await this.productsService.updateProduct({id: id, newData: req.body});
     }
 
     @HttpCode(200)
     @Delete(":id")
-    async deleteProduct (@Param("id") id: string): Promise<string> {
+    async deleteProduct (@Param("id", ParseUUIDPipe) id: string): Promise<string> {
         return await this.productsService.deleteProduct(id);
     }
 }

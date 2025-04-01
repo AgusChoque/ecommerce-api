@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put, Query, SetMetadata, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, SetMetadata, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/User.entity';
 import { AuthGuard } from '../auth/auth.guard';
@@ -17,7 +17,7 @@ export class UsersController {
 
     @HttpCode(200)
     @Get(":id")
-    async getUserById (@Param("id") id: string): Promise<Omit<User, "password">>  {
+    async getUserById (@Param("id", ParseUUIDPipe) id: string): Promise<Omit<User, "password">> {
         return await this.usersService.getUserById(id);
     };
 
@@ -30,13 +30,13 @@ export class UsersController {
 
     @HttpCode(200)
     @Put(":id")
-    async updateUser (@Param("id") id: string, @Body() newData: CreateUserDto): Promise<string> {
+    async updateUser (@Param("id", ParseUUIDPipe) id: string, @Body() newData: CreateUserDto): Promise<string> {
         return await this.usersService.updateUser({id, newData});
     };
 
     @HttpCode(200)
     @Delete(":id")
-    async deleteUser (@Param("id") id: string): Promise<string> {
+    async deleteUser (@Param("id", ParseUUIDPipe) id: string): Promise<string> {
         return await this.usersService.deleteUser(id);
     };
 }
