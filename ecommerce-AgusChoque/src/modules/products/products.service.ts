@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { Product } from './entities/Product.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -66,6 +66,15 @@ export class ProductsService {
         });
 
         return "All products loaded.";
-    }
+    };
 
-}
+    async updateImg (id: string, url: string): Promise<string> {
+        const product: Product | null = await this.productsRepository.findOneBy({id});
+        if (!product) throw new NotFoundException("Product not found.");
+
+        product.imgUrl = url;
+        await this.productsRepository.save(product);
+        return id;
+    };
+
+};
