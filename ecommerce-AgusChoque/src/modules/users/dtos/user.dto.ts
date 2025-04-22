@@ -1,6 +1,6 @@
 import { IsEmail, IsInt, IsNotEmpty, IsNumber, IsString, Length, Matches, Max, Min } from "class-validator";
 
-export class CreateUserDto {
+export class UserDto {
     @IsNotEmpty()
     @IsString()
     @Length(3, 80)
@@ -18,6 +18,15 @@ export class CreateUserDto {
         message: ""
     })
     password: string;
+
+    //TODO: Confirmar pass dentro del DTO
+    @IsNotEmpty()
+    @IsString()
+    @Length(8, 15)
+    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/, {
+        message: ""
+    })
+    passConfirmation: string;
 
     @IsNotEmpty()
     @IsString()

@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Pu
 import { UsersService } from './users.service';
 import { User } from './entities/User.entity';
 import { AuthGuard } from '../auth/auth.guard';
-import { CreateUserDto } from './dtos/createUser.dto';
+import { UserDto } from './dtos/user.dto';
 
 @UseGuards(AuthGuard)
 @Controller('users')
@@ -12,31 +12,34 @@ export class UsersController {
     @HttpCode(200)
     @Get()
     async getUsers (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<Omit<User, "password">[]> {
-        return await this.usersService.getAllUsers(Number(page), Number(limit));
+        return await this.usersService.getUsersService(Number(page), Number(limit));
     };
 
     @HttpCode(200)
     @Get(":id")
     async getUserById (@Param("id", ParseUUIDPipe) id: string): Promise<Omit<User, "password">> {
-        return await this.usersService.getUserById(id);
+        return await this.usersService.getUserByIdService(id);
     };
 
     @SetMetadata("isPublic", true)
     @HttpCode(201)
     @Post()
-    async createUser (@Body() createUserDto: CreateUserDto): Promise<string> {
-        return await this.usersService.createUser(createUserDto);
+    async createUser (@Body() user: UserDto): Promise<string> {
+        return await this.usersService.createUserService(user);
     };
 
     @HttpCode(200)
     @Put(":id")
-    async updateUser (@Param("id", ParseUUIDPipe) id: string, @Body() newData: CreateUserDto): Promise<string> {
-        return await this.usersService.updateUser({id, newData});
+    async updateUser (
+        @Param("id", ParseUUIDPipe) id: string,
+        @Body() user: UserDto
+    ): Promise<string> {
+        return await this.usersService.updateUserService(id, user);
     };
 
     @HttpCode(200)
     @Delete(":id")
     async deleteUser (@Param("id", ParseUUIDPipe) id: string): Promise<string> {
-        return await this.usersService.deleteUser(id);
+        return await this.usersService.deleteUserService(id);
     };
 }
