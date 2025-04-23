@@ -6,11 +6,12 @@ import { UpdateProductMiddleware } from 'src/middlewares/updateProduct.middlewar
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Product } from './entities/Product.entity';
 import { Category } from '../categories/entities/Category.entity';
+import { ProductsRepository } from './products.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Product, Category])],
   controllers: [ProductsController],
-  providers: [ProductsService]
+  providers: [ProductsService, ProductsRepository]
 })
 export class ProductsModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {

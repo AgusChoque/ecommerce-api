@@ -34,7 +34,7 @@ export class ProductsRepository {
     async seederProductsRepository (): Promise<string> {
         const categories = await this.categoryDbRepository.find();
 
-        await data.map(async (product) => {
+        await Promise.all(data.map(async (product) => {
             const category: Category | undefined = categories.find(element => element.name === product.category);
             const newProduct: Product = await this.productsDbRepository.create({...product, category});
 
@@ -45,7 +45,7 @@ export class ProductsRepository {
             .values(newProduct)
             .orUpdate(["description", "price", "imgUrl", "stock"], ["name"])
             .execute();
-        });
+        }));
 
         return "All products loaded.";
     };
