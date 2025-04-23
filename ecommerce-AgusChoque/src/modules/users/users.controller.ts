@@ -18,7 +18,7 @@ export class UsersController {
     @HttpCode(200)
     @Get(":id")
     async getUserById (@Param("id", ParseUUIDPipe) id: string): Promise<Omit<User, "password">> {
-        return await this.usersService.getUserByIdService(id);
+        return await this.usersService.getUserService(id);
     };
 
     @SetMetadata("isPublic", true)

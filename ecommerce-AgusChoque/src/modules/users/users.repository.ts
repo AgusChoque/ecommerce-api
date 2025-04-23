@@ -21,12 +21,17 @@ export class UsersRepository {
         return users.map(({password, ...userWithoutPassword}) => userWithoutPassword);
     };
 
-    async getUserByIdRepository (id: string): Promise<Omit<User, 'password'>> {
+    async getUserRepository (id: string): Promise<Omit<User, 'password'>> {
         const user: User | null = await this.usersDbRepository.findOne({where: { id }, relations: { orders: true }});
         if ( !user ) throw new NotFoundException("User not found.");
 
         const {password, ...userWithoutPassword} = user;
         return userWithoutPassword;
+    };
+
+    async getUserByEmail (email: string): Promise <User | null> {
+        const user: User | null = await this.usersDbRepository.findOneBy({email});
+        return user;
     };
 
     async createUserRepository (user: UserDto): Promise<string> {

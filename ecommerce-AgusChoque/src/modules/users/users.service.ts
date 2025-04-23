@@ -11,8 +11,8 @@ export class UsersService {
         return await this.usersRepository.getUsersRepository(page, limit);
     };
 
-    async getUserByIdService (id: string): Promise<Omit<User, "password">> {
-        return await this.usersRepository.getUserByIdRepository(id);
+    async getUserService (id: string): Promise<Omit<User, "password">> {
+        return await this.usersRepository.getUserRepository(id);
     };
 
     async createUserService (user: UserDto): Promise<string> {

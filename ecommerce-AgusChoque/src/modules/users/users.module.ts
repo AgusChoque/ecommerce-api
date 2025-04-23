@@ -5,11 +5,12 @@ import { CreateUserMiddleware } from 'src/middlewares/createUser.middleware';
 import { UpdateUserMiddleware } from 'src/middlewares/updateUser.middleware';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entities/User.entity';
+import { UsersRepository } from './users.repository';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
   controllers: [UsersController],
-  providers: [UsersService]
+  providers: [UsersService, UsersRepository]
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
