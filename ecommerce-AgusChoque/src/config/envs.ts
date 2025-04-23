@@ -11,3 +11,6 @@ export const DB_PASSWORD: string | undefined = process.env.DB_PASSWORD;
 export const CLOUDINARY_CLOUD_NAME: string | undefined = process.env.CLOUDINARY_CLOUD_NAME;
 export const CLOUDINARY_API_KEY: string | undefined = process.env.CLOUDINARY_API_KEY;
 export const CLOUDINARY_API_SECRET: string | undefined = process.env.CLOUDINARY_API_SECRET;
+
+//JWT
+export const JWT_SECRET: string | undefined = process.env.JWT_SECRET;

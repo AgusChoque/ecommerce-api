@@ -13,7 +13,7 @@ const configDb = {
     migration: ["dist/migrations/*{.ts,.js}"],
     autoLoadEntities: true,
     synchronize: true,
-    dropSchema: true
+    dropSchema: false
 };
 
 export default registerAs("typeorm", () => configDb);
