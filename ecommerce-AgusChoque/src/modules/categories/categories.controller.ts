@@ -8,7 +8,7 @@ export class CategoriesController {
 
     @Get()
     async getCategories (): Promise<Category[]> {
-        return await this.categoriesService.getCategories();
+        return await this.categoriesService.getCategoriesService();
     };
 
     @Get("seeder")
