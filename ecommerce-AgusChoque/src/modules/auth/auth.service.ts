@@ -1,21 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../users/entities/User.entity';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { AuthRepository } from './auth.repository';
 import { LoginUserDto } from './dtos/loginUser.dto';
+import { UserDto } from '../users/dtos/user.dto';
 
 @Injectable()
 export class AuthService {
-    constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+    constructor(private readonly authRepository: AuthRepository) {};
 
-    getAuth ():string {
-        return "Auth.";
+    getAuthService () {
+        return this.authRepository.getAuthRepository();
     };
 
-    async signin ({email, password}: LoginUserDto): Promise<string> {
-        const user: User | null = await this.usersRepository.findOneBy({email});
-        if(!user) throw Error("Email or password incorrect.");
-        else if (user.password !== password) throw Error("Email or password incorrect.");
-        else return user.id;
-    }
-}
+    async signUpService (user: UserDto) {
+        return await this.authRepository.signUpRepository(user);
+    };
+
+    async signInService (credentials: LoginUserDto) {
+        return await this.authRepository.signInRepository(credentials);
+    };
+};
