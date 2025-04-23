@@ -1,18 +1,16 @@
-import { HttpException, Injectable } from '@nestjs/common';
-import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
-import * as toStream from "buffer-to-stream";
+import { Injectable } from '@nestjs/common';
+import { FilesRepository } from './files.repository';
+import { ProductsRepository } from '../products/products.repository';
 
 @Injectable()
 export class FilesService {
+    constructor (
+        private readonly productsRepository: ProductsRepository,
+        private readonly filesRepository: FilesRepository
+    ) {};
 
-    async uploadImg (file: Express.Multer.File): Promise<UploadApiResponse> {
-        return new Promise ((resolve, reject) => {
-            const upload = cloudinary.uploader.upload_stream( { resource_type: 'auto' }, (error, result) => {
-                if (error) reject(error);
-                else if (!result) throw new HttpException({ status: 500, error: "Upload failed: No result returned from Cloudinary." }, 500)
-                else resolve(result);
-            });
-            toStream(file.buffer).pipe(upload);
-        })
+    async uploadImgService (id: string, file: Express.Multer.File): Promise<string> {
+        const uploaded = await this.filesRepository.uploadImgRepository(file);
+        return await this.productsRepository.updateImgRepository(id, uploaded.secure_url);
     };
 };
