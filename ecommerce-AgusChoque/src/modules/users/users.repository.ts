@@ -1,8 +1,9 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/User.entity";
 import { Repository } from "typeorm";
-import { UserDto } from "./dtos/user.dto";
+import { CreateUserDto } from "./dtos/createUser.dto";
+import * as bcrypt from "bcrypt";
 
 @Injectable()
 export class UsersRepository {
@@ -34,14 +35,17 @@ export class UsersRepository {
         return user;
     };
 
-    async createUserRepository (user: UserDto): Promise<string> {
+    async createUserRepository ({ passwordConfirm, ...user}: CreateUserDto): Promise<string> {
         const newUser: User = await this.usersDbRepository.create(user);
         await this.usersDbRepository.save(newUser);
         return newUser.id;
     };
 
-    async updateUserRepository (id: string, user: UserDto): Promise<string> {
-        await this.usersDbRepository.update(id, user);
+    async updateUserRepository (id: string, {passwordConfirm, password, ...user}: CreateUserDto): Promise<string> {
+        const passHashed = await bcrypt.hash(password, 10);
+        if( !passHashed ) throw new InternalServerErrorException("There was a problem hashing the password.");
+
+        await this.usersDbRepository.update(id, {...user, password: passHashed});
 
         const userUpdated = await this.usersDbRepository.findOneBy({id});
         if( !userUpdated ) throw new NotFoundException('User not found.');

@@ -1,7 +1,7 @@
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString, IsUUID } from "class-validator"
-import { Product } from "src/modules/products/entities/Product.entity"
+import { Type } from "class-transformer";
+import { ArrayNotEmpty, IsArray, IsNotEmpty, IsString, IsUUID } from "class-validator";
+import { Product } from "src/modules/products/entities/Product.entity";
 
-//TODO: Revisar validaciones
 export class CreateOrderDto {
     @IsNotEmpty()
     @IsString()
@@ -11,5 +11,6 @@ export class CreateOrderDto {
     @IsNotEmpty()
     @IsArray()
     @ArrayNotEmpty()
+    @Type(() => Product)
     products: Partial<Product>[]
 };

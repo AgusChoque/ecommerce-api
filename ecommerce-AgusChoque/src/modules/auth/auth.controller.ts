@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, HttpCode } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from './dtos/loginUser.dto';
 import { User } from '../users/entities/User.entity';
-import { UserDto } from '../users/dtos/user.dto';
+import { CreateUserDto } from '../users/dtos/createUser.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -16,7 +16,7 @@ export class AuthController {
 
     @HttpCode(201)
     @Post("signup")
-    async signUp (@Body() user: UserDto): Promise<Omit<User, "password">> {
+    async signUp (@Body() user: CreateUserDto): Promise<Omit<User, "password">> {
         return await this.authService.signUpService(user);
     }
 

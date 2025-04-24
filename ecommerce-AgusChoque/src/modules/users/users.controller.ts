@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Pu
 import { UsersService } from './users.service';
 import { User } from './entities/User.entity';
 import { AuthGuard } from '../auth/auth.guard';
-import { UserDto } from './dtos/user.dto';
+import { CreateUserDto } from './dtos/createUser.dto';
 
 @UseGuards(AuthGuard)
 @Controller('users')
@@ -21,18 +21,18 @@ export class UsersController {
         return await this.usersService.getUserService(id);
     };
 
-    @SetMetadata("isPublic", true)
-    @HttpCode(201)
-    @Post()
-    async createUser (@Body() user: UserDto): Promise<string> {
-        return await this.usersService.createUserService(user);
-    };
+    // @SetMetadata("isPublic", true)
+    // @HttpCode(201)
+    // @Post()
+    // async createUser (@Body() user: CreateUserDto): Promise<string> {
+    //     return await this.usersService.createUserService(user);
+    // };
 
     @HttpCode(200)
     @Put(":id")
     async updateUser (
         @Param("id", ParseUUIDPipe) id: string,
-        @Body() user: UserDto
+        @Body() user: CreateUserDto
     ): Promise<string> {
         return await this.usersService.updateUserService(id, user);
     };

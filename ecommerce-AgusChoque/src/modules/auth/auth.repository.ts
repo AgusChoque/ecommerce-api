@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { User } from "../users/entities/User.entity";
 import { JwtService } from "@nestjs/jwt";
-import { UserDto } from "../users/dtos/user.dto";
+import { CreateUserDto } from "../users/dtos/createUser.dto";
 import { UsersRepository } from "../users/users.repository";
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from "./dtos/loginUser.dto";
@@ -17,12 +17,11 @@ export class AuthRepository {
         return "Auth.";
     };
 
-    async signUpRepository ({password, ...userToSignUp}: UserDto): Promise<Omit<User, "password">> {
-        if ( password !== userToSignUp.passConfirmation ) throw new BadRequestException("Passwords must match.");
-
+    async signUpRepository ({password, ...userToSignUp}: CreateUserDto): Promise<Omit<User, "password">> {
         const passHashed = await bcrypt.hash(password, 10);
-        const id = await this.usersRepository.createUserRepository({ ...userToSignUp, password: passHashed });
+        if (!passHashed) throw new InternalServerErrorException("There was a problem hashing the password.");
 
+        const id = await this.usersRepository.createUserRepository({ ...userToSignUp, password: passHashed });
         return await this.usersRepository.getUserRepository(id);
     };
 

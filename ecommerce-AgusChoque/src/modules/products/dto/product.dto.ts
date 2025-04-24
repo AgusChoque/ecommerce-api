@@ -1,17 +1,17 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator"
+import { IsDecimal, IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
 
-//TODO: Agregar mas validaciones
 export class ProductDto {
-    @IsNotEmpty()    
+    @IsNotEmpty()
     @IsString()
+    @Length(3, 50)
     name: string
 
     @IsNotEmpty()    
     @IsString()
     description: string
 
-    @IsNotEmpty()    
-    @IsNumber()
+    @IsNotEmpty()
+    @IsDecimal({decimal_digits: "2"})
     price: number
 
     @IsNotEmpty()    
