@@ -6,7 +6,9 @@ import { ProductDto } from './dto/product.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/role.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
     constructor(private readonly productsService:ProductsService) {};
@@ -35,6 +37,7 @@ export class ProductsController {
         return await this.productsService.createProductService(product);
     };
 
+    @ApiBearerAuth()
     @Roles(Role.Admin)
     @UseGuards(AuthGuard, RolesGuard)
     @HttpCode(200)

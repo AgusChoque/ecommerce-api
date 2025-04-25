@@ -2,9 +2,15 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { logger } from './middlewares/logger.middleware';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { SwaggerModule } from '@nestjs/swagger';
+import { swaggerConfig } from './config/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  const document = SwaggerModule.createDocument( app, swaggerConfig);
+  SwaggerModule.setup("api", app, document);
+
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
     whitelist: true,
@@ -16,6 +22,7 @@ async function bootstrap() {
       })
     },
   }));
+  
   app.use(logger);
   await app.listen(process.env.PORT ?? 3000);
 }
