@@ -1,14 +1,19 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, SetMetadata, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entities/User.entity';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateUserDto } from './dtos/createUser.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/role.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @UseGuards(AuthGuard)
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {};
 
+    @Roles(Role.Admin)
+    @UseGuards(RolesGuard)
     @HttpCode(200)
     @Get()
     async getUsers (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<Omit<User, "password">[]> {
@@ -17,7 +22,7 @@ export class UsersController {
 
     @HttpCode(200)
     @Get(":id")
-    async getUserById (@Param("id", ParseUUIDPipe) id: string): Promise<Omit<User, "password">> {
+    async getUserById (@Param("id", ParseUUIDPipe) id: string): Promise<Omit<User, "password" | "isAdmin">> {
         return await this.usersService.getUserService(id);
     };
 

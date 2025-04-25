@@ -5,6 +5,8 @@ import { CreateUserDto } from "../users/dtos/createUser.dto";
 import { UsersRepository } from "../users/users.repository";
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from "./dtos/loginUser.dto";
+import { Role } from "src/role.enum";
+import { JWT_SECRET } from "src/config/envs";
 
 @Injectable()
 export class AuthRepository {
@@ -17,7 +19,7 @@ export class AuthRepository {
         return "Auth.";
     };
 
-    async signUpRepository ({password, ...userToSignUp}: CreateUserDto): Promise<Omit<User, "password">> {
+    async signUpRepository ({password, ...userToSignUp}: CreateUserDto): Promise<Omit<User, "password" | "isAdmin">> {
         const passHashed = await bcrypt.hash(password, 10);
         if (!passHashed) throw new InternalServerErrorException("There was a problem hashing the password.");
 
@@ -25,17 +27,23 @@ export class AuthRepository {
         return await this.usersRepository.getUserRepository(id);
     };
 
-    async signInRepository ({email, password}: LoginUserDto): Promise<string> {
+    async signInRepository ({email, password}: LoginUserDto) {
         const user: User | null = await this.usersRepository.getUserByEmail(email);
         const isValidPass = await bcrypt.compare(password, user?.password);
         if ( !user || !isValidPass ) throw new BadRequestException("Email or password incorrect.");
         
+        const userRole = user.isAdmin ? Role.Admin : Role.User;
+
         const userPayload = {
             sub: user.id,
-            email: user.email
+            email: user.email,
+            role: userRole
         };
-        const token = await this.jwtService.signAsync(userPayload);
+        const token = await this.jwtService.signAsync(userPayload, {secret: JWT_SECRET});
 
-        return token;
+        return {
+            data: token,
+            message: "Login successfully."
+        };
     };
 }

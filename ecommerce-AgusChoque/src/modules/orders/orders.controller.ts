@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpCode, Param, ParseUUIDPipe, Post, UseGuards 
 import { OrdersService } from './orders.service';
 import { Order } from './entities/Order.entity';
 import { CreateOrderDto } from './dtos/createOrder.dto';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
 @UseGuards(AuthGuard)
 @Controller('orders')

@@ -16,14 +16,13 @@ export class AuthController {
 
     @HttpCode(201)
     @Post("signup")
-    async signUp (@Body() user: CreateUserDto): Promise<Omit<User, "password">> {
+    async signUp (@Body() user: CreateUserDto): Promise<Omit<User, "password" | "isAdmin">> {
         return await this.authService.signUpService(user);
     }
 
     @HttpCode(200)
     @Post("signin")
     async signIn (@Body() credentials: LoginUserDto) {
-        const token = await this.authService.signInService(credentials);
-        return {login: true, token};
+        return await this.authService.signInService(credentials);
     };
 }

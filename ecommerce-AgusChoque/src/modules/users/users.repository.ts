@@ -22,11 +22,11 @@ export class UsersRepository {
         return users.map(({password, ...userWithoutPassword}) => userWithoutPassword);
     };
 
-    async getUserRepository (id: string): Promise<Omit<User, 'password'>> {
+    async getUserRepository (id: string): Promise<Omit<User, 'password' | 'isAdmin'>> {
         const user: User | null = await this.usersDbRepository.findOne({where: { id }, relations: { orders: true }});
         if ( !user ) throw new NotFoundException("User not found.");
 
-        const {password, ...userWithoutPassword} = user;
+        const {password, isAdmin, ...userWithoutPassword} = user;
         return userWithoutPassword;
     };
 

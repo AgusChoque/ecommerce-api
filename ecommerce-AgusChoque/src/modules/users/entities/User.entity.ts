@@ -38,23 +38,27 @@ export class User {
     
     @Column("text")
     address: string
-
+    
     @Column({
         type: "varchar",
         length: 50
     })
     country?: string | undefined
-
+    
     @Column({
         type: "varchar",
         length: 50
     })
     city?: string | undefined
+    
+    @Column({ default: false })
+    isAdmin: boolean
 
     @OneToMany(() => Order, (order) => order.user)
     @JoinColumn({
         name: "orders_id"
     })
     orders: Order[]
+
     
 };

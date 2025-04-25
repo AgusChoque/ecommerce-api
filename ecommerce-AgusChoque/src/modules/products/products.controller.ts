@@ -1,8 +1,11 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Product } from './entities/Product.entity';
-import { AuthGuard } from '../auth/auth.guard';
+import { AuthGuard } from '../auth/guards/auth.guard';
 import { ProductDto } from './dto/product.dto';
+import { Roles } from 'src/decorators/roles.decorator';
+import { Role } from 'src/role.enum';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 @Controller('products')
 export class ProductsController {
@@ -32,7 +35,8 @@ export class ProductsController {
         return await this.productsService.createProductService(product);
     };
 
-    @UseGuards(AuthGuard)
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard, RolesGuard)
     @HttpCode(200)
     @Put(":id")
     async updateProduct (@Param("id", ParseUUIDPipe) id: string, @Body() product: ProductDto): Promise<string> {

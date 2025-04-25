@@ -1,5 +1,5 @@
 import { IsInt, IsNotEmpty, IsNumber, IsString, Length, Max, Min, Validate } from "class-validator";
-import { MatchPassword } from "src/decorators/matchPassword";
+import { MatchPassword } from "../../../decorators/matchPassword.decorator";
 import { LoginUserDto } from "src/modules/auth/dtos/loginUser.dto";
 
 export class CreateUserDto extends LoginUserDto {
