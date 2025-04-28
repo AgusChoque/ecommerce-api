@@ -26,7 +26,10 @@ export class ProductsRepository {
     };
 
     async getProductRepository (id: string): Promise<Product> {
-        const product: Product | null = await this.productsDbRepository.findOneBy({id});
+        const product: Product | null = await this.productsDbRepository.findOne({
+            where: { id },
+            relations: { category: true }
+        });
         if ( !product ) throw new NotFoundException("Product not found.");
         return product;
     };
@@ -50,15 +53,15 @@ export class ProductsRepository {
         return "All products loaded.";
     };
 
-    async createProductRepository (product: ProductDto): Promise<string> {
+    async createProductRepository ({price, ...product}: ProductDto): Promise<string> {
         //TODO: Agregar categoria a los productos
-        const newProduct: Product = await this.productsDbRepository.create(product);
+        const newProduct: Product = await this.productsDbRepository.create({price: Number(price), ...product});
         await this.productsDbRepository.save(newProduct);
         return newProduct.id;
     };
 
-    async updateProductRepository (id: string, newProduct: ProductDto): Promise<string> {
-        await this.productsDbRepository.update(id, newProduct);
+    async updateProductRepository (id: string, {price, ...newProduct}: ProductDto): Promise<string> {
+        await this.productsDbRepository.update(id, {price: Number(price), ...newProduct});
 
         const product = await this.productsDbRepository.findOneBy({id});
         if( !product ) throw new NotFoundException('Product not found.');

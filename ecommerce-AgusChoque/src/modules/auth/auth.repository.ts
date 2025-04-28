@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { User } from "../users/entities/User.entity";
 import { JwtService } from "@nestjs/jwt";
 import { CreateUserDto } from "../users/dtos/createUser.dto";
@@ -16,10 +16,13 @@ export class AuthRepository {
     ) {};
 
     getAuthRepository ():string {
-        return "Auth.";
+        return "Data successfully retrieved.";
     };
 
     async signUpRepository ({password, ...userToSignUp}: CreateUserDto): Promise<Omit<User, "password" | "isAdmin">> {
+        const user: User | null = await this.usersRepository.getUserByEmail(userToSignUp.email);
+        if( user ) throw new ConflictException("An account with this email has already been created.");
+        
         const passHashed = await bcrypt.hash(password, 10);
         if (!passHashed) throw new InternalServerErrorException("There was a problem hashing the password.");
 
@@ -42,7 +45,7 @@ export class AuthRepository {
         const token = await this.jwtService.signAsync(userPayload, {secret: JWT_SECRET});
 
         return {
-            data: token,
+            token,
             message: "Login successfully."
         };
     };

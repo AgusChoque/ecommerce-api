@@ -24,8 +24,7 @@ export class OrdersRepository {
         const order: Order | null = await this.ordersDbRepository.findOne({
             where: { id },
             relations: {
-                user: true,
-                orderDetail: true
+                orderDetail: { products: { category: true } }
             }
         });
         if(!order) throw new NotFoundException("Order not found.");
@@ -33,7 +32,7 @@ export class OrdersRepository {
         return order;
     };
 
-    async addOrderRepository ({ userId, products }: CreateOrderDto) {
+    async addOrderRepository ({ userId, products }: CreateOrderDto): Promise<Order> {
         const user: User | null = await this.usersDbRepository.findOneBy({id: userId});
         if( !user ) throw new NotFoundException("User not found.");
 
@@ -70,11 +69,14 @@ export class OrdersRepository {
 
         await this.orderDetailsDbRepository.save(orderDetail);
 
-        return await this.ordersDbRepository.findOne({
+        const OrderToReturn = await this.ordersDbRepository.findOne({
             where: { id: order.id },
             relations: {
                 orderDetail: true
             }
         });
+        if( !OrderToReturn ) throw new NotFoundException("Order not found.");
+
+        return OrderToReturn;
     };
 };

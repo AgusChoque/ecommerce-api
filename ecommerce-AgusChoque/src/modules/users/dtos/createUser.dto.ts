@@ -5,15 +5,6 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDto extends LoginUserDto {
     @ApiProperty({
-        description: "Full name of the user.",
-        example: "John Smith"
-    })
-    @IsNotEmpty()
-    @IsString()
-    @Length(3, 80)
-    name: string;
-
-    @ApiProperty({
         description: "Confirmation of the password. Must match the value of the 'password' field.",
         example: "Password123!"
     })
@@ -23,7 +14,16 @@ export class CreateUserDto extends LoginUserDto {
     passwordConfirm: string;
 
     @ApiProperty({
-        description: "User's address. Can be a home or work address.",
+        description: "Full name of the user.",
+        example: "John Smith"
+    })
+    @IsNotEmpty()
+    @IsString()
+    @Length(3, 80)
+    name: string;
+
+    @ApiProperty({
+        description: "User's address.",
         example: "742 Evergreen Terrace, Apt 2B"
     })
     @IsNotEmpty()
@@ -43,18 +43,20 @@ export class CreateUserDto extends LoginUserDto {
     phone: number;
 
     @ApiProperty({
-        description: "Country of residence. This field is optional.",
+        description: "Country of residence.",
         example: "Argentina"
     })
+    @IsNotEmpty()
     @IsString()
     @Length(3, 20)
-    country?: string;
+    country: string;
 
     @ApiProperty({
-        description: "City of residence. This field is optional.",
+        description: "City of residence.",
         example: "Córdoba"
     })
+    @IsNotEmpty()
     @IsString()
     @Length(5, 20)
-    city?: string;
+    city: string;
 };

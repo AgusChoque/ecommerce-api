@@ -19,7 +19,8 @@ export class CreateOrderDto {
             { id: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
             { id: "2c963f66-4562-5717-3fa8-b3fcf64afa63" }
         ],
-        type: [ProductIdDto]
+        type: ProductIdDto,
+        isArray: true
     })
     @IsNotEmpty()
     @IsArray()

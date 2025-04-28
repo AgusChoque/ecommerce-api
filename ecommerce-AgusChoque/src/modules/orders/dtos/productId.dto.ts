@@ -1,12 +1,4 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty, IsUUID } from "class-validator";
+import { PickType } from "@nestjs/swagger";
+import { Product } from "src/modules/products/entities/Product.entity";
 
-export class ProductIdDto {
-    @ApiProperty({
-        description: "Unique identifier of the product.",
-        example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
-    })
-    @IsNotEmpty()
-    @IsUUID()
-    id: string;
-}
+export class ProductIdDto extends PickType(Product, ["id"]){}
