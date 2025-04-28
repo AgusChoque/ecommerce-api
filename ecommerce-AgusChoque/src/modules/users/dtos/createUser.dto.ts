@@ -5,8 +5,7 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateUserDto extends LoginUserDto {
     @ApiProperty({
-        description: "Confirmation of the password. Must match the value of the 'password' field.",
-        example: "Password123!"
+        description: "Confirmation of the password. Must match the value of the 'password' field."
     })
     @IsNotEmpty()
     @IsString()
@@ -14,8 +13,7 @@ export class CreateUserDto extends LoginUserDto {
     passwordConfirm: string;
 
     @ApiProperty({
-        description: "Full name of the user.",
-        example: "John Smith"
+        description: "Full name of the user."
     })
     @IsNotEmpty()
     @IsString()
@@ -23,8 +21,7 @@ export class CreateUserDto extends LoginUserDto {
     name: string;
 
     @ApiProperty({
-        description: "User's address.",
-        example: "742 Evergreen Terrace, Apt 2B"
+        description: "User's address."
     })
     @IsNotEmpty()
     @IsString()
@@ -32,8 +29,7 @@ export class CreateUserDto extends LoginUserDto {
     address: string;
 
     @ApiProperty({
-        description: "Contact phone number. Must be exactly 10 digits long.",
-        example: 1234567890
+        description: "Contact phone number. Must be exactly 10 digits long."
     })
     @IsNotEmpty()
     @IsNumber()
@@ -43,8 +39,7 @@ export class CreateUserDto extends LoginUserDto {
     phone: number;
 
     @ApiProperty({
-        description: "Country of residence.",
-        example: "Argentina"
+        description: "Country of residence."
     })
     @IsNotEmpty()
     @IsString()
@@ -52,8 +47,7 @@ export class CreateUserDto extends LoginUserDto {
     country: string;
 
     @ApiProperty({
-        description: "City of residence.",
-        example: "Córdoba"
+        description: "City of residence."
     })
     @IsNotEmpty()
     @IsString()

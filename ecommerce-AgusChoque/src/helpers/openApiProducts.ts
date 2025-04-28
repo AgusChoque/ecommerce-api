@@ -1,6 +1,7 @@
-import { ApiBodyOptions, ApiParamOptions, ApiQueryOptions, ApiResponseOptions } from "@nestjs/swagger";
+import { ApiBodyOptions, ApiParamOptions, ApiQueryOptions, ApiResponseOptions, getSchemaPath } from "@nestjs/swagger";
 import { ProductDto } from "src/modules/products/dto/product.dto";
 import { Product } from "src/modules/products/entities/Product.entity";
+import { ProductsRepository } from "src/modules/products/products.repository";
 
 // GET "/products"
 // Response
@@ -58,7 +59,38 @@ export const responsePostProduct: ApiResponseOptions = {
 export const bodyPostProduct: ApiBodyOptions = {
     description: "Data required to create a new product.",
     required: true,
-    type: ProductDto
+    schema: {
+        oneOf: [{ $ref: getSchemaPath(ProductDto) }],
+    },
+    examples: {
+        "Wireless Headphones": {
+            summary: "Wireless Headphones",
+            value: {
+                name: "Wireless Headphones",
+                description: "High-quality wireless headphones with noise cancellation.",
+                price: "199.99",
+                stock: 150,
+            }
+        },
+        "Gaming Mouse": {
+            summary: "Gaming Mouse",
+            value: {
+              name: "Gaming Mouse",
+              description: "Ergonomic gaming mouse with customizable RGB lighting.",
+              price: "59.99",
+              stock: 80,
+            },
+        },
+        "Mechanical Keyboard": {
+            summary: "Mechanical Keyboard",
+            value: {
+              name: "Mechanical Keyboard",
+              description: "Compact mechanical keyboard with customizable keys and RGB backlight.",
+              price: "129.99",
+              stock: 65,
+            },
+        }
+    }
 };
 
 
@@ -72,13 +104,44 @@ export const responsePutProduct: ApiResponseOptions = {
 // Params
 export const paramIdPutProduct: ApiParamOptions = {
     name: "id",
-    description: "Unique identifier of the product to update."
+    description: "Unique identifier of the product to update.",
 };
 // Body
 export const bodyPutProduct: ApiBodyOptions = {
     description: "Fields to update for the selected product.",
     required: true,
-    type: ProductDto
+    schema: {
+        oneOf: [{ $ref: getSchemaPath(ProductDto) }],
+    },
+    examples: {
+        "Update Stock for Wireless Headphones": {
+            summary: "Update stock for Wireless Headphones",
+            value: {
+              name: "Wireless Headphones",
+              description: "High-quality wireless headphones with noise cancellation.",
+              price: "199.99",
+              stock: 120,
+            },
+          },
+          "Update Description for Gaming Mouse": {
+            summary: "Update description for Gaming Mouse",
+            value: {
+              name: "Gaming Mouse",
+              description: "Improved ergonomic design with customizable DPI and side buttons.",
+              price: "59.99",
+              stock: 75,
+            },
+          },
+          "Update Price for Mechanical Keyboard": {
+            summary: "Update price for Mechanical Keyboard",
+            value: {
+              name: "Mechanical Keyboard",
+              description: "Compact mechanical keyboard with customizable keys and RGB backlight.",
+              price: "109.99",
+              stock: 60,
+            },
+          },
+    }
 };
 
 

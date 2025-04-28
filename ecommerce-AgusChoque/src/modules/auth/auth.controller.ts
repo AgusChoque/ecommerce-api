@@ -3,9 +3,10 @@ import { AuthService } from './auth.service';
 import { LoginUserDto } from './dtos/loginUser.dto';
 import { User } from '../users/entities/User.entity';
 import { CreateUserDto } from '../users/dtos/createUser.dto';
-import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiExtraModels, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { bodySignInAuth, bodySignUpAuth, responseGetAuth, responseSignInAuth, responseSignUpAuth } from 'src/helpers/openApiAuth';
 
+@ApiExtraModels(LoginUserDto, CreateUserDto)
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Order } from "./entities/Order.entity";
 import { Repository } from "typeorm";
@@ -45,28 +45,28 @@ export class OrdersRepository {
         order.date = `${day}/${month}/${year}`;
         order.user = user;
 
-        await this.ordersDbRepository.save(order);
-
+        
         let total: number = 0
         const elegibleProducts: Product[] = (await Promise.all(products.map(async (element) => {
             const product: Product | null = await this.productsDbRepository.findOneBy({ id: element.id });
-            if( !product ) return;
-            if ( product.stock < 1 ) return;
-
+            if( !product ) throw new NotFoundException("Unable to create order: Product ID not found.");
+            if ( product.stock < 1 ) throw new ConflictException("Unable to create order: Insufficient stock for one or more items.");
+            
             total += Number(product.price);
             await this.productsDbRepository.update(
                 {id: product.id},
                 {stock: product.stock - 1}
             );
-
+            
             return product;
         }))).filter(element => element !== undefined);
-
+        
         const orderDetail = new OrderDetail();
         orderDetail.price = Number(Number(total).toFixed(2));
         orderDetail.products = elegibleProducts;
         orderDetail.order = order;
-
+        
+        await this.ordersDbRepository.save(order);
         await this.orderDetailsDbRepository.save(orderDetail);
 
         const OrderToReturn = await this.ordersDbRepository.findOne({

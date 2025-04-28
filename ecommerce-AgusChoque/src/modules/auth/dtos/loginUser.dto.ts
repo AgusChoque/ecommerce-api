@@ -3,8 +3,7 @@ import { IsEmail, IsNotEmpty, IsString, Length, Matches } from "class-validator"
 
 export class LoginUserDto {
     @ApiProperty({
-        description: "User's email address used for login.",
-        example: "example@mail.com"
+        description: "User's email address used for login."
     })
     @IsNotEmpty()
     @IsString()
@@ -12,13 +11,12 @@ export class LoginUserDto {
     email: string;
 
     @ApiProperty({
-        description: "User's password. Must contain at least one lowercase letter, one uppercase letter, one number, and one special character.",
-        example: "Password123!"
+        description: "User's password. Must contain at least one lowercase letter, one uppercase letter, one number, and one special character."
     })
     @IsNotEmpty()
     @IsString()
     @Length(8, 15)
-    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/,{
+    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*,.]).+$/,{
         message: "The password must contain one lowercase letter, one uppercase letter, one number, and one special character."
     })
     password: string;

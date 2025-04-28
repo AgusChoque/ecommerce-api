@@ -10,15 +10,13 @@ import { v4 as uuid } from "uuid";
 })
 export class Product {
     @ApiProperty({
-        description: "Unique identifier for the product",
-        example: "0d33d24d-121a-4a57-92ee-5c2b867364d5",
+        description: "Unique identifier for the product"
       })
     @PrimaryGeneratedColumn("uuid")
     id:string = uuid()
 
     @ApiProperty({
-        description: "Name of the product (must be unique)",
-        example: "Wireless Mouse",
+        description: "Name of the product (must be unique)"
       })
     @Column({
         nullable: false,
@@ -29,8 +27,7 @@ export class Product {
     name: string
 
     @ApiProperty({
-        description: "Detailed description of the product",
-        example: "An ergonomic wireless mouse with adjustable DPI and long battery life.",
+        description: "Detailed description of the product"
       })
     @Column({
         type: "text",
@@ -39,8 +36,7 @@ export class Product {
     description: string
 
     @ApiProperty({
-        description: "Price of the product in USD",
-        example: "49.99",
+        description: "Price of the product in USD"
       })
     @Column({
         type: "decimal",
@@ -51,8 +47,7 @@ export class Product {
     price: number
 
     @ApiProperty({
-        description: "Number of units available in stock",
-        example: 150,
+        description: "Number of units available in stock"
       })
     @Column({
         type: "int",
@@ -62,7 +57,6 @@ export class Product {
 
     @ApiProperty({
         description: "Image URL of the product in base64 format or a public URL",
-        example: "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
         default: "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png"
       })
     @Column({

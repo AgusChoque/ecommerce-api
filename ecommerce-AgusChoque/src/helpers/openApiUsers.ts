@@ -1,4 +1,4 @@
-import { ApiBodyOptions, ApiParamOptions, ApiQueryOptions, ApiResponseOptions } from "@nestjs/swagger";
+import { ApiBodyOptions, ApiParamOptions, ApiQueryOptions, ApiResponseOptions, getSchemaPath } from "@nestjs/swagger";
 import { CreateUserDto } from "src/modules/users/dtos/createUser.dto";
 import { User } from "src/modules/users/entities/User.entity";
 
@@ -54,7 +54,50 @@ export const updateUserParam: ApiParamOptions = {
 export const updateUserBody: ApiBodyOptions = {
     description: "Fields to update for the selected user.",
     required: true,
-    type: CreateUserDto
+    schema: {
+        oneOf: [{ $ref: getSchemaPath(CreateUserDto) }]
+    },
+    examples: {
+        "John Doe": {
+            summary: "Update for John Doe",
+            value: {
+                email: "john_doe@example.com",
+                password: "SecurePass123!",
+                passwordConfirm: "SecurePass123!",
+                name: "John Doe",
+                address: "456 Updated St, Apartment 7A",
+                phone: 9876543210,
+                country: "Argentina",
+                city: "Buenos Aires"
+            },
+        },
+        "Alice Smith": {
+            summary: "Update for Alice Smith",
+            value: {
+                email: "alice.smith@example.com",
+                password: "SimplePass.321",
+                passwordConfirm: "SimplePass.321",
+                name: "Alice Smith",
+                address: "43 Elm Street, New York, USA",
+                phone: 1122334455,
+                country: "USA",
+                city: "New York"
+            },
+        },
+        "Charlie Brown": {
+            summary: "Update for Charlie Brown",
+            value: {
+                email: "charlie.brown@example.fr",
+                password: "Ch@rlie2021!",
+                passwordConfirm: "Ch@rlie2021!",
+                name: "Charlie Brown",
+                address: "457 Rue de Paris, Apt. 26",
+                phone: 6677889900,
+                country: "France",
+                city: "Paris"
+            },
+        },
+    }
 };
 
 

@@ -5,8 +5,7 @@ import { ProductIdDto } from "./productId.dto";
 
 export class CreateOrderDto {
     @ApiProperty({
-        description: "Unique identifier of the user placing the order.",
-        example: "550e8400-e29b-41d4-a716-446655440000"
+        description: "Unique identifier of the user placing the order."
     })
     @IsNotEmpty()
     @IsString()
@@ -15,10 +14,6 @@ export class CreateOrderDto {
 
     @ApiProperty({
         description: "Array of objects with product IDs to be included in the order.",
-        example: [
-            { id: "3fa85f64-5717-4562-b3fc-2c963f66afa6" },
-            { id: "2c963f66-4562-5717-3fa8-b3fcf64afa63" }
-        ],
         type: ProductIdDto,
         isArray: true
     })

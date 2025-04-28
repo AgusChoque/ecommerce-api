@@ -6,9 +6,10 @@ import { ProductDto } from './dto/product.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/role.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { bodyPostProduct, bodyPutProduct, limitGetProduct, pageGetProduct, paramIdDeleteProduct, paramIdGetProduct, paramIdPutProduct, responseDeleteProduct, responseGetProduct, responseGetProducts, responseGetSeederProduct, responsePostProduct, responsePutProduct } from 'src/helpers/openApiProducts';
 
+@ApiExtraModels(ProductDto)
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {

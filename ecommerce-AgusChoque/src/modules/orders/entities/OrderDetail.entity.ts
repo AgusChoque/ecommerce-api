@@ -9,15 +9,13 @@ import { ApiProperty } from "@nestjs/swagger";
 })
 export class OrderDetail {
     @ApiProperty({
-        description: 'Unique identifier for the order detail.',
-        example: 'd8979f5d-c5f8-4cfe-8f53-001c3a2d325d',
+        description: 'Unique identifier for the order detail.'
     })
     @PrimaryGeneratedColumn("uuid")
     id: string = uuid()
 
     @ApiProperty({
-        description: 'Price of the order detail.',
-        example: 49.99,
+        description: 'Price of the order detail.'
     })
     @Column({
         type: "decimal",
@@ -44,7 +42,15 @@ export class OrderDetail {
     })
     @ManyToMany(() => Product, (product) => product.orderDetails)
     @JoinTable({
-        name: "ORDER_DETAILS_PRODUCTS"
+        name: "ORDER_DETAILS_PRODUCTS",
+        joinColumn: {
+            name: "order_detail_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "product_id",
+            referencedColumnName: "id"
+        }
     })
     products: Product[]
 

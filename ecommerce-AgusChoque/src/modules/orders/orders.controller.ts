@@ -3,9 +3,10 @@ import { OrdersService } from './orders.service';
 import { Order } from './entities/Order.entity';
 import { CreateOrderDto } from './dtos/createOrder.dto';
 import { AuthGuard } from '../auth/guards/auth.guard';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { bodyPostOrder, paramIdGetOrder, responseGetOrder, responsePostOrder } from 'src/helpers/openApiOrders';
 
+@ApiExtraModels(CreateOrderDto)
 @ApiTags('Orders')
 @ApiBearerAuth()
 @UseGuards(AuthGuard)

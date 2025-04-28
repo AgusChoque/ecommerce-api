@@ -9,8 +9,7 @@ import { ApiProperty } from "@nestjs/swagger";
 })
 export class Order {
     @ApiProperty({
-        description: 'Unique identifier for the order.',
-        example: '4fef06e0-78b5-47f3-8d56-ff0e7ac2d824'
+        description: 'Unique identifier for the order.'
     })
     @PrimaryGeneratedColumn("uuid")
     id: string = uuid()
@@ -26,8 +25,7 @@ export class Order {
     user: User
     
     @ApiProperty({
-        description: 'Date when the order was placed.',
-        example: '2025-04-25',
+        description: 'Date when the order was placed.'
     })
     @Column()
     date: string

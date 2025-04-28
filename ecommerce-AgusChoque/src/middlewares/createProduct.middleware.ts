@@ -1,21 +1,21 @@
-import { Injectable, NestMiddleware } from "@nestjs/common";
+import { ConflictException, Injectable, NestMiddleware } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import { NextFunction, Request, Response } from "express";
+import { Product } from "src/modules/products/entities/Product.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class CreateProductMiddleware implements NestMiddleware {
-    use(req: Request, res: Response, next: NextFunction) {
-        const { name, description, price, stock, imgUrl } = req.body;
+    constructor (
+        @InjectRepository(Product)
+        private readonly productDbRepository: Repository<Product>
+    ) {};
 
-        // if(!name) next (new Error("Name it's required."));
-        // if(!description) next (new Error("Description it's required."));
-        // if(!price) next (new Error("Price it's required."));
-        // if(!imgUrl) next (new Error("ImgUrl it's required."));
+    async use(req: Request, res: Response, next: NextFunction) {
+        const { name } = req.body;
 
-        // if(typeof name !== "string") next (new Error("Name must be a string."));
-        // if(typeof description !== "string") next (new Error("Description must be a string."));
-        // if(typeof price !== "number") next (new Error("Price must be a number."));
-        // if(typeof stock !== "boolean") next (new Error("Stock must be a boolean."));
-        // if(typeof imgUrl !== "string") next (new Error("ImgUrl must be a string."));
+        const product = await this.productDbRepository.findOneBy({ name });
+        if ( product ) throw new ConflictException("A product with this name already exists.");
 
         next();
     }
