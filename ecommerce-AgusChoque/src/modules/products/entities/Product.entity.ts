@@ -2,7 +2,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Category } from "src/modules/categories/entities/Category.entity";
 import { OrderDetail } from "src/modules/orders/entities/OrderDetail.entity";
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 @Entity({
@@ -12,7 +12,7 @@ export class Product {
     @ApiProperty({
         description: "Unique identifier for the product"
       })
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryColumn()
     id:string = uuid()
 
     @ApiProperty({

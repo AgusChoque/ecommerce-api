@@ -21,7 +21,26 @@ export const responseSignUpAuth: ApiResponseOptions = {
     status: 201,
     description: "Successfully registered a new user. The created user is returned.",
     type: UserResponseDto,
-    example: "5f8b8e94-c4d4-4d74-b11e-c24a40798c13"
+    example: {
+        "id": "5f8b8e94-c4d4-4d74-b11e-c24a40798c13",
+        "name": "Federico Ramírez",
+        "email": "federico.ramirez@mail.com",
+        "phone": "1167890123",
+        "address": "Pasaje Sol 222",
+        "country": "Argentina",
+        "city": "Salta",
+        "isAdmin": false,
+        "orders": [
+            {
+            "id": "843cfe82-1974-407b-8144-6dc6e15d929e",
+            "date": "22/08/2025"
+            },
+            {
+            "id": "39d6349b-49c3-4b5d-84fc-f91616f0ad34",
+            "date": "25/08/2025"
+            }
+        ]
+    }
 };
 // Body
 export const bodySignUpAuth: ApiBodyOptions = {
@@ -121,6 +140,12 @@ export const bodySignInAuth: ApiBodyOptions = {
                 password: "Ch@rlie2021!",
               },
           },
-
+          "Admin User": {
+            summary: "Login for admin",
+            value: {
+                email: "admin@mail.com",
+                password: "Admin123.",
+            }
+          }
     }
 };

@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Order } from "src/modules/orders/entities/Order.entity";
-import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 
 @Entity({
@@ -11,8 +11,8 @@ export class User {
         description: "Unique identifier for the user.",
         example: "550e8400-e29b-41d4-a716-446655440000"
     })
-    @PrimaryGeneratedColumn("uuid")
-    id:string
+    @PrimaryColumn()
+    id:string = uuid()
 
     @ApiProperty({
         description: "Full name of the user.",

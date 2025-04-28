@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from "uuid";
 import { User } from "src/modules/users/entities/User.entity";
 import { OrderDetail } from "./OrderDetail.entity";
@@ -11,7 +11,7 @@ export class Order {
     @ApiProperty({
         description: 'Unique identifier for the order.'
     })
-    @PrimaryGeneratedColumn("uuid")
+    @PrimaryColumn()
     id: string = uuid()
     
     @ApiProperty({

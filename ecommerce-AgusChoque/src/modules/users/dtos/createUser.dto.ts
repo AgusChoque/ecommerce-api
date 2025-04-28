@@ -43,7 +43,7 @@ export class CreateUserDto extends LoginUserDto {
     })
     @IsNotEmpty()
     @IsString()
-    @Length(3, 20)
+    @Length(5, 20)
     country: string;
 
     @ApiProperty({
