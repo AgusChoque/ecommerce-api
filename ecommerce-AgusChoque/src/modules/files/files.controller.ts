@@ -2,7 +2,7 @@ import { Controller, FileTypeValidator, HttpCode, MaxFileSizeValidator, Param, P
 import { FilesService } from "./files.service";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { AuthGuard } from "../auth/guards/auth.guard";
-import { ApiBearerAuth, ApiBody, ApiConsumes, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from "@nestjs/swagger";
 import { bodyImgPostFile, paramIdPostFile, responsePostFile } from "src/helpers/openApiFiles";
 
 @ApiTags("Files")
@@ -13,6 +13,7 @@ export class FilesController {
     ) {};
 
     // OPEN API
+    @ApiOperation({ summary: "Update a product's image by ID." })
     @ApiBearerAuth()
     @ApiResponse(responsePostFile)
     @ApiParam(paramIdPostFile)

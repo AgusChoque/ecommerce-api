@@ -1,14 +1,17 @@
 import { ApiBodyOptions, ApiResponseOptions, getSchemaPath } from "@nestjs/swagger";
 import { LoginUserDto } from "src/modules/auth/dtos/loginUser.dto";
 import { CreateUserDto } from "src/modules/users/dtos/createUser.dto";
-import { User } from "src/modules/users/entities/User.entity";
+import { UserResponseDto } from "src/modules/users/dtos/userResponse.dto";
 
 // GET "/auth"
 // Response
 export const responseGetAuth: ApiResponseOptions = {
     status: 200,
     description: "Confirmation message: Data successfully retrieved.",
-    type: String
+    schema: {
+        type: "string",
+        example: "Data successfully retrieved."
+    }
 };
 
 
@@ -17,7 +20,8 @@ export const responseGetAuth: ApiResponseOptions = {
 export const responseSignUpAuth: ApiResponseOptions = {
     status: 201,
     description: "Successfully registered a new user. The created user is returned.",
-    type: User
+    type: UserResponseDto,
+    example: "5f8b8e94-c4d4-4d74-b11e-c24a40798c13"
 };
 // Body
 export const bodySignUpAuth: ApiBodyOptions = {
@@ -116,6 +120,7 @@ export const bodySignInAuth: ApiBodyOptions = {
                 email: "charlie.brown@example.fr",
                 password: "Ch@rlie2021!",
               },
-          }
+          },
+
     }
 };

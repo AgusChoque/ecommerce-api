@@ -8,15 +8,13 @@ import { v4 as uuid } from "uuid";
 })
 export class Category {
     @ApiProperty({
-        description: 'Unique identifier for the category.',
-        example: 'f56e2b58-c9a0-4a9a-9d0e-d8f9715dcbf7',
+        description: 'Unique identifier for the category.'
     })
     @PrimaryGeneratedColumn("uuid")
     id: string = uuid()
 
     @ApiProperty({
-        description: 'Name of the category.',
-        example: 'Electronics',
+        description: 'Name of the category.'
     })
     @Column({
         type: "varchar",

@@ -20,7 +20,6 @@ export class ProductDto {
     @ApiProperty({
         description: "Price of the product in USD. Must have 2 decimal places."
     })
-    @IsDecimal()
     @IsNotEmpty()
     @IsDecimal({decimal_digits: "2"})
     price: string

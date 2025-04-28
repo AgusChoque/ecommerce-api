@@ -1,21 +1,23 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { Product } from './entities/Product.entity';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { ProductDto } from './dto/product.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/role.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { bodyPostProduct, bodyPutProduct, limitGetProduct, pageGetProduct, paramIdDeleteProduct, paramIdGetProduct, paramIdPutProduct, responseDeleteProduct, responseGetProduct, responseGetProducts, responseGetSeederProduct, responsePostProduct, responsePutProduct } from 'src/helpers/openApiProducts';
+import { ProductResponseDto } from './dto/productResponse.dto';
+import { Product } from './entities/Product.entity';
 
-@ApiExtraModels(ProductDto)
+@ApiExtraModels(ProductDto, Product)
 @ApiTags('Products')
 @Controller('products')
 export class ProductsController {
     constructor(private readonly productsService:ProductsService) {};
 
     // OPEN API
+    @ApiOperation({ summary: 'Get a list of products by page and amount.' })
     @ApiResponse(responseGetProducts)
     @ApiQuery(pageGetProduct)
     @ApiQuery(limitGetProduct)
@@ -23,11 +25,12 @@ export class ProductsController {
     @HttpCode(200)
     @Get()
     // HANDLER
-    async getProducts (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<Product[]> {
+    async getProducts (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<ProductResponseDto[]> {
         return await this.productsService.getProductsService(Number(page), Number(limit));
     };
 
     // OPEN API
+    @ApiOperation({ summary: 'Perform the preloading of products.' })
     @ApiResponse(responseGetSeederProduct)
     // HTTP METHOD
     @HttpCode(201)
@@ -38,17 +41,19 @@ export class ProductsController {
     };
     
     // OPEN API
+    @ApiOperation({ summary: 'Get product by ID' })
     @ApiResponse(responseGetProduct)
     @ApiParam(paramIdGetProduct)
     // HTTP METHOD
     @HttpCode(200)
     @Get(":id")
     // HANDLER
-    async getProductById (@Param("id", ParseUUIDPipe) id: string): Promise<Product> {
+    async getProductById (@Param("id", ParseUUIDPipe) id: string): Promise<ProductResponseDto> {
         return await this.productsService.getProductService(id);
     };
 
     // OPEN API
+    @ApiOperation({ summary: 'Create a product.' })
     @ApiResponse(responsePostProduct)
     @ApiBody(bodyPostProduct)
     // HTTP METHOD
@@ -60,6 +65,7 @@ export class ProductsController {
     };
 
     // OPEN API
+    @ApiOperation({ summary: 'Update a product. You must be an admin.' })
     @ApiResponse(responsePutProduct)
     @ApiParam(paramIdPutProduct)
     @ApiBody(bodyPutProduct)
@@ -76,6 +82,7 @@ export class ProductsController {
     };
 
     // OPEN API
+    @ApiOperation({ summary: 'Delete a product.' })
     @ApiResponse(responseDeleteProduct)
     @ApiParam(paramIdDeleteProduct)
     // HTTP METHOD

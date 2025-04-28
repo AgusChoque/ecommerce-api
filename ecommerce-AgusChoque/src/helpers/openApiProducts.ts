@@ -1,15 +1,76 @@
 import { ApiBodyOptions, ApiParamOptions, ApiQueryOptions, ApiResponseOptions, getSchemaPath } from "@nestjs/swagger";
 import { ProductDto } from "src/modules/products/dto/product.dto";
-import { Product } from "src/modules/products/entities/Product.entity";
-import { ProductsRepository } from "src/modules/products/products.repository";
+import { ProductResponseDto } from "src/modules/products/dto/productResponse.dto";
 
 // GET "/products"
 // Response
 export const responseGetProducts: ApiResponseOptions = {
     status: 200,
     description: 'Successfully retrieved the list of products.',
-    type: Product,
-    isArray: true
+    type: ProductResponseDto,
+    isArray: true,
+    example: [
+        {
+            "id": "7b9f1b46-0d50-4f6e-bc21-8a9b4b122d52",
+            "name": "Wireless Mouse",
+            "description": "Ergonomic wireless mouse with adjustable DPI.",
+            "price": "29.99",
+            "stock": 150,
+            "imgUrl": "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
+            "category": {
+              "id": "3e6e9c1e-b1a3-48b0-8e20-25f0e04c8fc7",
+              "name": "Electronics"
+            }
+          },
+          {
+            "id": "d6d1ef3d-b1fb-45e6-b9f7-5e1e2c295d23",
+            "name": "Leather Wallet",
+            "description": "Genuine leather wallet with multiple compartments.",
+            "price": "45.50",
+            "stock": 85,
+            "imgUrl": "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
+            "category": {
+              "id": "8f705ae5-86cb-43c6-899d-51c981ff0d56",
+              "name": "Accessories"
+            }
+          },
+          {
+            "id": "1fc16d69-c0d3-4f7f-9335-31f3b94d8cf7",
+            "name": "Yoga Mat",
+            "description": "Eco-friendly yoga mat made from recycled materials.",
+            "price": "22.00",
+            "stock": 60,
+            "imgUrl": "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
+            "category": {
+              "id": "f9a1e3cb-5f55-4bb7-b7f8-8c3e0c7313f0",
+              "name": "Fitness"
+            }
+          },
+          {
+            "id": "13fd2aef-6c7a-47c2-8fb8-51473d8900e4",
+            "name": "Bluetooth Speaker",
+            "description": "Portable Bluetooth speaker with powerful bass and long battery life.",
+            "price": "89.90",
+            "stock": 40,
+            "imgUrl": "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
+            "category": {
+              "id": "bcaee3f5-d7c9-44af-9338-d7ad17058219",
+              "name": "Electronics"
+            }
+          },
+          {
+            "id": "6f5ebba5-0c7e-4e6f-a3c5-4ac2ed8e3d01",
+            "name": "Ceramic Mug",
+            "description": "Handmade ceramic mug ideal for coffee or tea.",
+            "price": "15.75",
+            "stock": 200,
+            "imgUrl": "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
+            "category": {
+              "id": "292c0634-fb1d-4aa1-83d8-bd59e3b7ec61",
+              "name": "Home & Kitchen"
+            }
+          }
+    ]
 };
 // Query's
 export const pageGetProduct: ApiQueryOptions = {
@@ -29,7 +90,21 @@ export const limitGetProduct: ApiQueryOptions = {
 export const responseGetProduct: ApiResponseOptions = {
     status: 200,
     description: 'Successfully retrieved the product by ID.',
-    type: Product
+    schema: {
+        oneOf: [{ $ref: getSchemaPath(ProductResponseDto) }]
+    },
+    example: {
+        "id": "7b9f1b46-0d50-4f6e-bc21-8a9b4b122d52",
+        "name": "Wireless Mouse",
+        "description": "Ergonomic wireless mouse with adjustable DPI.",
+        "price": "29.99",
+        "stock": 150,
+        "imgUrl": "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
+        "category": {
+            "id": "3e6e9c1e-b1a3-48b0-8e20-25f0e04c8fc7",
+            "name": "Electronics"
+        }
+    }
 };
 // Params
 export const paramIdGetProduct: ApiParamOptions = {
@@ -44,7 +119,10 @@ export const paramIdGetProduct: ApiParamOptions = {
 export const responseGetSeederProduct: ApiResponseOptions = {
     status: 201,
     description: 'Successfully preloaded products. A confirmation message is returned as a string.',
-    type: String
+    schema: {
+        type: "string",
+        example: "All products loaded."
+    }
 };
 
 
@@ -53,7 +131,10 @@ export const responseGetSeederProduct: ApiResponseOptions = {
 export const responsePostProduct: ApiResponseOptions = {
     status: 201,
     description: 'Successfully created a product. The ID of the created product is returned as a string.',
-    type: String,
+    schema: {
+        type: "string",
+        example: "d6d1ef3d-b1fb-45e6-b9f7-5e1e2c295d23"
+    }
 };
 // Body
 export const bodyPostProduct: ApiBodyOptions = {
@@ -99,7 +180,10 @@ export const bodyPostProduct: ApiBodyOptions = {
 export const responsePutProduct: ApiResponseOptions = {
     status: 200,
     description: "Successfully updated the product. The updated product ID is returned as a string.",
-    type: String
+    schema: {
+        type: "string",
+        example: "1fc16d69-c0d3-4f7f-9335-31f3b94d8cf7"
+    }
 };
 // Params
 export const paramIdPutProduct: ApiParamOptions = {
@@ -150,7 +234,10 @@ export const bodyPutProduct: ApiBodyOptions = {
 export const responseDeleteProduct: ApiResponseOptions = {
     status: 200,
     description: "Successfully deleted the product. The deleted product ID is returned as a string.",
-    type: String
+    schema: {
+        type: "string",
+        example: "13fd2aef-6c7a-47c2-8fb8-51473d8900e4"
+    }
 };
 // Params
 export const paramIdDeleteProduct: ApiParamOptions = {

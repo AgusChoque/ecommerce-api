@@ -1,13 +1,44 @@
 import { ApiBodyOptions, ApiParamOptions, ApiResponseOptions, getSchemaPath } from "@nestjs/swagger";
 import { CreateOrderDto } from "src/modules/orders/dtos/createOrder.dto";
-import { Order } from "src/modules/orders/entities/Order.entity";
+import { CreateOrderResponseDto, GetOrderResponseDto } from "src/modules/orders/dtos/OrderResponses.dto";
 
 // GET "/orders/{id}"
 // Response
 export const responseGetOrder: ApiResponseOptions = {
     status: 200,
     description: "Successfully retrieved the order by ID.",
-    type: Order
+    type: GetOrderResponseDto,
+    example: {
+        "id": "ad1a5b43-2f58-496b-8209-8699f8f409df",
+        "date": "28/04/2025",
+        "orderDetail": {
+            "id": "cfe37b6b-4a33-419e-b49f-65140bb3c0f0",
+            "price": "329.98",
+            "products": [{
+                "id": "2e4d1c56-f83c-41f2-8a84-8fa128c45d63",
+                "name": "Wireless Headphones",
+                "description": "Noise-canceling over-ear headphones with Bluetooth connectivity.",
+                "price": "199.99",
+                "stock": 50,
+                "imgUrl": "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
+                "category": {
+                    "id": "c2a163f1-6b3a-4d63-9e7a-5c71855b53c7",
+                    "name": "Electronics"
+                }
+            },{
+                "id": "d4b7d0b2-712e-41d8-a9e3-2d9b0fbe3c62",
+                "name": "Laptop Stand",
+                "description": "Adjustable laptop stand for ergonomic use.",
+                "price": "129.99",
+                "stock": 30,
+                "imgUrl": "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
+                "category": {
+                    "id": "d4b7d0b2-712e-41d8-a9e3-2d9b0fbe3c62",
+                    "name": "Electronics"
+                }
+            }]
+        }
+    }
 };
 // Params
 export const paramIdGetOrder: ApiParamOptions = {
@@ -21,7 +52,15 @@ export const paramIdGetOrder: ApiParamOptions = {
 export const responsePostOrder: ApiResponseOptions = {
     status: 201,
     description: "Successfully created an order. The order and order details are returned.",
-    type: Order
+    type: CreateOrderResponseDto,
+    example: {
+        "id": "dbb2f693-8105-4c06-8fa5-593f62d3288b",
+        "date": "28/04/2025",
+        "orderDetail": {
+            "id": "7bc4e3d4-033d-46b4-b5b9-1be632a62e6b",
+            "price": "199.99"
+        }
+    }
 };
 // Body
 export const bodyPostOrder: ApiBodyOptions = {

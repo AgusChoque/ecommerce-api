@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, SetMetadata, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { User } from './entities/User.entity';
 import { AuthGuard } from '../auth/guards/auth.guard';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from 'src/role.enum';
 import { RolesGuard } from '../auth/guards/roles.guard';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { deleteUserParam, deleteUserResponse, getUserParam, getUserResponse, getUsersResponse, limitUsersQuery, pageUsersQuery, updateUserBody, updateUserParam, updateUserResponse } from 'src/helpers/openApiUsers';
+import { AdminResponseDto, UserResponseDto } from './dtos/userResponse.dto';
 
 @ApiTags('Users')
 @ApiBearerAuth()
@@ -15,8 +15,9 @@ import { deleteUserParam, deleteUserResponse, getUserParam, getUserResponse, get
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {};
-
+    
     // OPEN API
+    @ApiOperation({ summary: "Get a list of users by page and amount. You must be an admin." })
     @ApiResponse(getUsersResponse)
     @ApiQuery(pageUsersQuery)
     @ApiQuery(limitUsersQuery)
@@ -26,18 +27,19 @@ export class UsersController {
     @HttpCode(200)
     @Get()
     // HANDLER
-    async getUsers (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<Omit<User, "password">[]> {
+    async getUsers (@Query("page") page: string = "1", @Query("limit") limit: string = "5"):Promise<AdminResponseDto[]> {
         return await this.usersService.getUsersService(Number(page), Number(limit));
     };
 
     // OPEN API
+    @ApiOperation({ summary: "Get user by ID" })
     @ApiResponse(getUserResponse)
     @ApiParam(getUserParam)
     // HTTP METHOD
     @HttpCode(200)
     @Get(":id")
     // HANDLER
-    async getUserById (@Param("id", ParseUUIDPipe) id: string): Promise<Omit<User, "password" | "isAdmin">> {
+    async getUserById (@Param("id", ParseUUIDPipe) id: string): Promise<UserResponseDto> {
         return await this.usersService.getUserService(id);
     };
 
@@ -49,6 +51,7 @@ export class UsersController {
     // };
 
     // OPEN API
+    @ApiOperation({ summary: "Update a user." })
     @ApiResponse(updateUserResponse)
     @ApiParam(updateUserParam)
     @ApiBody(updateUserBody)
@@ -64,6 +67,7 @@ export class UsersController {
     };
 
     // OPEN API
+    @ApiOperation({ summary: "Delete a user." })
     @ApiResponse(deleteUserResponse)
     @ApiParam(deleteUserParam)
     // HTTP METHOD

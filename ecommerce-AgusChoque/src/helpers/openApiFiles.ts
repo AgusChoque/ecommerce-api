@@ -5,7 +5,10 @@ import { ApiBodyOptions, ApiParamOptions, ApiResponseOptions } from "@nestjs/swa
 export const responsePostFile: ApiResponseOptions = {
     status: 200,
     description: "Successfully updated the product image. The updated product ID is returned as a string.",
-    type: String
+    schema: {
+      type: "string",
+      example: "2e4d1c56-f83c-41f2-8a84-8fa128c45d63"
+    }
 };
 // Body
 export const bodyImgPostFile: ApiBodyOptions = {
