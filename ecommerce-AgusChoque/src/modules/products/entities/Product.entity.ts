@@ -63,7 +63,7 @@ export class Product {
         type: "text",
         nullable: false
     })
-    imgUrl: string = "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png"
+    imgUrl?: string = "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png"
 
     @ApiProperty({
         description: "Category to which the product belongs",

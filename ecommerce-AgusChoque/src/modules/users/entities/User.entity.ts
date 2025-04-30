@@ -8,15 +8,13 @@ import { v4 as uuid } from "uuid";
 })
 export class User {
     @ApiProperty({
-        description: "Unique identifier for the user.",
-        example: "550e8400-e29b-41d4-a716-446655440000"
+        description: "Unique identifier for the user."
     })
     @PrimaryColumn()
     id:string = uuid()
 
     @ApiProperty({
-        description: "Full name of the user.",
-        example: "John Smith"
+        description: "Full name of the user."
     })
     @Column({
         nullable: false,
@@ -26,8 +24,7 @@ export class User {
     name: string
     
     @ApiProperty({
-        description: "User's unique email address.",
-        example: "example@mail.com"
+        description: "User's unique email address."
     })
     @Column({
         nullable: false,
@@ -38,8 +35,7 @@ export class User {
     email: string
 
     @ApiProperty({
-        description: "User's password, stored securely.",
-        example: "Password123!"
+        description: "User's password, stored securely."
     })
     @Column({
         nullable: false,
@@ -49,8 +45,7 @@ export class User {
     password: string
 
     @ApiProperty({
-        description: "User's phone number.",
-        example: 1234567890
+        description: "User's phone number."
     })
     @Column({
         type: "bigint"
@@ -58,15 +53,13 @@ export class User {
     phone: number
     
     @ApiProperty({
-        description: "User's residential address.",
-        example: "123 Main St, Apartment 4B"
+        description: "User's residential address."
     })
     @Column("text")
     address: string
     
     @ApiProperty({
-        description: "Country where the user resides.",
-        example: "Argentina"
+        description: "Country where the user resides."
     })
     @Column({
         type: "varchar",
@@ -75,8 +68,7 @@ export class User {
     country?: string | undefined
     
     @ApiProperty({
-        description: "City where the user resides.",
-        example: "Buenos Aires"
+        description: "City where the user resides."
     })
     @Column({
         type: "varchar",

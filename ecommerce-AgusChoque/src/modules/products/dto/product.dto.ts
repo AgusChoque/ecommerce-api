@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDecimal, IsNotEmpty, IsNumber, IsString, Length } from "class-validator";
+import { IsDecimal, IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString, IsUrl, IsUUID, Length, Matches } from "class-validator";
 
 export class ProductDto {
     @ApiProperty({
@@ -22,12 +22,32 @@ export class ProductDto {
     })
     @IsNotEmpty()
     @IsDecimal({decimal_digits: "2"})
+    @Matches(/^(?!0(\.0+)?$)\d+(\.\d+)?$/, {
+        message: 'The number must be a positive decimal greater than 0',
+    })
     price: string
 
     @ApiProperty({
         description: "Available stock quantity of the product."
     })
-    @IsNotEmpty()    
+    @IsNotEmpty()
     @IsNumber()
+    @IsPositive()
     stock: number
+
+    @ApiProperty({
+        description: "UUID of the category to which this product belongs."
+    })
+    @IsString()
+    @IsUUID()
+    category: string
+
+    @ApiProperty({
+        description: "Optional image URL representing the product.",
+        default: "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1745813141/b0nxokfccuaqcvsnudqs.png",
+        required: false
+    })
+    @IsOptional()
+    @IsUrl()
+    imgUrl?: string
 }

@@ -141,7 +141,8 @@ export const getUserResponse: ApiResponseOptions = {
 // Params
 export const getUserParam: ApiParamOptions = {
     name: "id",
-    description: "Unique identifier of the user to retrieve."
+    description: "Unique identifier of the user to retrieve.",
+    example: "e0848972-357e-4486-873c-04e9bbf7f8c6"
 };
 
 
@@ -185,8 +186,8 @@ export const updateUserBody: ApiBodyOptions = {
             summary: "Update for Alice Smith",
             value: {
                 email: "alice.smith@example.com",
-                password: "SimplePass.321",
-                passwordConfirm: "SimplePass.321",
+                password: "SimplePass@321",
+                passwordConfirm: "SimplePass@321",
                 name: "Alice Smith",
                 address: "43 Elm Street, New York, USA",
                 phone: 1122334455,
@@ -224,5 +225,6 @@ export const deleteUserResponse: ApiResponseOptions = {
 // Params
 export const deleteUserParam: ApiParamOptions = {
     name: "id",
-    description: "Unique identifier of the user to delete."
+    description: "Unique identifier of the user to delete.",
+    example: "e0848972-357e-4486-873c-04e9bbf7f8c6"
 };

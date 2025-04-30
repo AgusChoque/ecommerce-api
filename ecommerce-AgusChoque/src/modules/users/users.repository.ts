@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "./entities/User.entity";
 import { Repository } from "typeorm";
@@ -42,6 +42,8 @@ export class UsersRepository {
     };
 
     async updateUserRepository (id: string, {passwordConfirm, password, ...user}: CreateUserDto): Promise<string> {
+        const userDb = await this.usersDbRepository.findOneBy({ email: user.email });
+        if ( userDb && userDb.id !== id ) throw new ConflictException("A user with this email already exists.")
         const passHashed = await bcrypt.hash(password, 10);
         if( !passHashed ) throw new InternalServerErrorException("There was a problem hashing the password.");
 

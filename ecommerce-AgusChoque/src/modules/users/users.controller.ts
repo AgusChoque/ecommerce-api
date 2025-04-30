@@ -8,10 +8,11 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { deleteUserParam, deleteUserResponse, getUserParam, getUserResponse, getUsersResponse, limitUsersQuery, pageUsersQuery, updateUserBody, updateUserParam, updateUserResponse } from 'src/helpers/openApiUsers';
 import { AdminResponseDto, UserResponseDto } from './dtos/userResponse.dto';
+import { OwnUserGuard } from '../auth/guards/ownUser.guard';
 
 @ApiTags('Users')
 @ApiBearerAuth()
-@UseGuards(AuthGuard, RolesGuard)
+@UseGuards(AuthGuard, RolesGuard, OwnUserGuard)
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {};

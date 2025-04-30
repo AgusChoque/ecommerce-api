@@ -10,7 +10,7 @@ export class Category {
     @ApiProperty({
         description: 'Unique identifier for the category.'
     })
-    @PrimaryColumn()
+    @PrimaryGeneratedColumn("uuid")
     id: string = uuid()
 
     @ApiProperty({

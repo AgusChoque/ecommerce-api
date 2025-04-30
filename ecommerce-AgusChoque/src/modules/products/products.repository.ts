@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Product } from "./entities/Product.entity";
 import { Repository } from "typeorm";
@@ -53,15 +53,22 @@ export class ProductsRepository {
         return "All products loaded.";
     };
 
-    async createProductRepository ({price, ...product}: ProductDto): Promise<string> {
-        //TODO: Agregar categoria a los productos
-        const newProduct: Product = await this.productsDbRepository.create({price: Number(price), ...product});
+    async createProductRepository ({price, category, ...product}: ProductDto): Promise<string> {
+        const categoryDb: Category | null = await this.categoryDbRepository.findOneBy({ id: category });
+        if ( !categoryDb ) throw new NotFoundException("Category not found.");
+
+        const newProduct: Product = await this.productsDbRepository.create({price: Number(price), category: categoryDb, ...product});
         await this.productsDbRepository.save(newProduct);
         return newProduct.id;
     };
 
-    async updateProductRepository (id: string, {price, ...newProduct}: ProductDto): Promise<string> {
-        await this.productsDbRepository.update(id, {price: Number(price), ...newProduct});
+    async updateProductRepository (id: string, {price, category, ...newProduct}: ProductDto): Promise<string> {
+        const productDb = await this.productsDbRepository.findOneBy({ name: newProduct.name });
+        if ( productDb && productDb.id !== id ) throw new ConflictException("A product with this name already exists.")
+        const categoryDb: Category | null = await this.categoryDbRepository.findOneBy({ id: category });
+        if ( !categoryDb ) throw new NotFoundException("Category not found.");
+
+        await this.productsDbRepository.update(id, {price: Number(price), category: categoryDb, ...newProduct});
 
         const product = await this.productsDbRepository.findOneBy({id});
         if( !product ) throw new NotFoundException('Product not found.');

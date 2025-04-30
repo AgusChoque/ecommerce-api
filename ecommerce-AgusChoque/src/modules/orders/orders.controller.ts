@@ -5,11 +5,11 @@ import { AuthGuard } from '../auth/guards/auth.guard';
 import { ApiBearerAuth, ApiBody, ApiExtraModels, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { bodyPostOrder, paramIdGetOrder, responseGetOrder, responsePostOrder } from 'src/helpers/openApiOrders';
 import { CreateOrderResponseDto, GetOrderResponseDto } from './dtos/OrderResponses.dto';
+import { OwnUserGuard } from '../auth/guards/ownUser.guard';
 
 @ApiExtraModels(CreateOrderDto)
 @ApiTags('Orders')
 @ApiBearerAuth()
-@UseGuards(AuthGuard)
 @Controller('orders')
 export class OrdersController {
     constructor (private ordersService: OrdersService) {};
@@ -18,6 +18,8 @@ export class OrdersController {
     @ApiOperation({ summary: "Get a purchase order by ID." })
     @ApiResponse(responseGetOrder)
     @ApiParam(paramIdGetOrder)
+    // AUTH
+    @UseGuards(AuthGuard)
     // HTTP CODE
     @HttpCode(200)
     @Get(":id")
@@ -30,6 +32,8 @@ export class OrdersController {
     @ApiOperation({ summary: "Create a purchase order." })
     @ApiResponse(responsePostOrder)
     @ApiBody(bodyPostOrder)
+    // AUTH
+    @UseGuards(AuthGuard, OwnUserGuard)
     // HTTP CODE
     @HttpCode(201)
     @Post()

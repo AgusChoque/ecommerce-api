@@ -110,7 +110,7 @@ export const responseGetProduct: ApiResponseOptions = {
 export const paramIdGetProduct: ApiParamOptions = {
     name: "id",
     description: "Unique identifier of the product to retrieve.",
-    example: "5b2dae8b-f17c-48ca-bfc0-a7aed0883a44"
+    example: "6e1792c2-fdb3-49bb-a44c-91fa2b08d589"
 };
 
 
@@ -144,13 +144,15 @@ export const bodyPostProduct: ApiBodyOptions = {
         oneOf: [{ $ref: getSchemaPath(ProductDto) }],
     },
     examples: {
-        "Wireless Headphones": {
-            summary: "Wireless Headphones",
+        "Smartphone ZX12": {
+            summary: "Smartphone ZX12",
             value: {
-                name: "Wireless Headphones",
-                description: "High-quality wireless headphones with noise cancellation.",
-                price: "199.99",
-                stock: 150,
+              name: "Smartphone ZX12",
+              description: "Powerful smartphone with a 6.7-inch AMOLED display, triple camera system, and 128GB of storage.",
+              price: "649.99",
+              stock: 85,
+              imgUrl: "https://res.cloudinary.com/dcuqpgmi5/image/upload/v1746024500/sample-phone-image.webp",
+              category: "413736ea-0189-46ed-a3f1-40aeda174a39",
             }
         },
         "Gaming Mouse": {
@@ -160,6 +162,7 @@ export const bodyPostProduct: ApiBodyOptions = {
               description: "Ergonomic gaming mouse with customizable RGB lighting.",
               price: "59.99",
               stock: 80,
+              category: "554e0f45-a088-4148-a2d6-389eaa2fd575",
             },
         },
         "Mechanical Keyboard": {
@@ -169,6 +172,7 @@ export const bodyPostProduct: ApiBodyOptions = {
               description: "Compact mechanical keyboard with customizable keys and RGB backlight.",
               price: "129.99",
               stock: 65,
+              category: "72210a6f-b0b8-4164-a4d1-12781d142bbe",
             },
         }
     }
@@ -198,13 +202,14 @@ export const bodyPutProduct: ApiBodyOptions = {
         oneOf: [{ $ref: getSchemaPath(ProductDto) }],
     },
     examples: {
-        "Update Stock for Wireless Headphones": {
-            summary: "Update stock for Wireless Headphones",
+        "Update Stock for Smartphone ZX12": {
+            summary: "Update stock for Smartphone ZX12",
             value: {
-              name: "Wireless Headphones",
-              description: "High-quality wireless headphones with noise cancellation.",
-              price: "199.99",
+              name: "Smartphone ZX12",
+              description: "Powerful smartphone with a 6.7-inch AMOLED display, triple camera system, and 128GB of storage.",
+              price: "649.99",
               stock: 120,
+              category: "413736ea-0189-46ed-a3f1-40aeda174a39",
             },
           },
           "Update Description for Gaming Mouse": {
@@ -214,6 +219,7 @@ export const bodyPutProduct: ApiBodyOptions = {
               description: "Improved ergonomic design with customizable DPI and side buttons.",
               price: "59.99",
               stock: 75,
+              category: "554e0f45-a088-4148-a2d6-389eaa2fd575",
             },
           },
           "Update Price for Mechanical Keyboard": {
@@ -223,6 +229,7 @@ export const bodyPutProduct: ApiBodyOptions = {
               description: "Compact mechanical keyboard with customizable keys and RGB backlight.",
               price: "109.99",
               stock: 60,
+              category: "72210a6f-b0b8-4164-a4d1-12781d142bbe",
             },
           },
     }
@@ -242,5 +249,6 @@ export const responseDeleteProduct: ApiResponseOptions = {
 // Params
 export const paramIdDeleteProduct: ApiParamOptions = {
     name: "id",
-    description: "Unique identifier of the product to delete."
+    description: "Unique identifier of the product to delete.",
+    example: "f9138f67-848a-43a3-81fe-4e7f85bded9a"
 };

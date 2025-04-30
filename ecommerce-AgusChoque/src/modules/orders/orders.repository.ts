@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Order } from "./entities/Order.entity";
 import { Repository } from "typeorm";
@@ -6,6 +6,7 @@ import { OrderDetail } from "./entities/OrderDetail.entity";
 import { User } from "../users/entities/User.entity";
 import { Product } from "../products/entities/Product.entity";
 import { CreateOrderDto } from "./dtos/createOrder.dto";
+import { hasDuplicated } from "src/utils/hasDuplicated";
 
 @Injectable()
 export class OrdersRepository {
@@ -45,6 +46,7 @@ export class OrdersRepository {
         order.date = `${day}/${month}/${year}`;
         order.user = user;
 
+        if (hasDuplicated(products)) throw new BadRequestException("Only one product can be purchased per order.")
         
         let total: number = 0
         const elegibleProducts: Product[] = (await Promise.all(products.map(async (element) => {

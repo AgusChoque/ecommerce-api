@@ -29,5 +29,5 @@ export const bodyImgPostFile: ApiBodyOptions = {
 export const paramIdPostFile: ApiParamOptions = {
     name: "id",
     description: "Unique identifier of the product to update.",
-    example: "5b2dae8b-f17c-48ca-bfc0-a7aed0883a44"
+    example: "fdfaad8b-71d8-43e0-8c42-2bb8ec68f860"
 };

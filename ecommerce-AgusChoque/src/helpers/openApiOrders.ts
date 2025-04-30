@@ -43,7 +43,8 @@ export const responseGetOrder: ApiResponseOptions = {
 // Params
 export const paramIdGetOrder: ApiParamOptions = {
     name: "id",
-    description: "Unique identifier of the order to retrieve."
+    description: "Unique identifier of the order to retrieve.",
+    example: "ca716a97-c579-412d-a94c-e0426a750db4"
 };
 
 
@@ -70,42 +71,42 @@ export const bodyPostOrder: ApiBodyOptions = {
         oneOf: [{ $ref: getSchemaPath(CreateOrderDto) }]
     },
     examples: {
-        "Order for John Doe": {
-            summary: "Order for John Doe",
+        "Order for Maria Lopez": {
+            summary: "Order for Maria Lopez",
             value: {
-                userId: "59bfa3ab-a739-464e-a8d9-6d22201be6f0",
+                userId: "41e360d3-d50f-4f73-97e0-531e91e33aa2",
                 products: [{
-                    id: "28f582e1-22ac-4912-9f15-9527a273d0a4"
+                    id: "cfedaa9f-fce5-435d-8385-b4a935c3566c"
                 }, {
-                    id: "bee8b7a4-532c-4dd7-8b27-34280803ed70"
+                    id: "09ab699d-8acb-4a38-b9d1-aaa686b18435"
                 }, {
-                    id: "7cdfc7fd-d998-4adc-a900-e1226d408c26"
+                    id: "0f419499-7d1d-478c-82fd-2b36332fbaf1"
                 }]
             }
         },
-        "Order for Alice Smith": {
-            summary: "Order for Alice Smith",
+        "Order for Li Wei": {
+            summary: "Order for Li Wei",
             value: {
-                userId: "3d6e0cdb-e5a2-4873-bf29-faa0365746ab",
+                userId: "88be4436-569c-47e5-aca0-8a8b12fb4bd4",
                 products: [{
-                    id: "621a467d-2511-4494-a9f9-045487d7767c"
+                    id: "fdfaad8b-71d8-43e0-8c42-2bb8ec68f860"
                 }, {
-                    id: "98396f1e-09b2-43be-9ff7-7c60d3485f33"
+                    id: "cfedaa9f-fce5-435d-8385-b4a935c3566c"
                 }]
             }
         },
-        "Order for Charlie Brown": {
-            summary: "Order for Charlie Brown",
+        "Order for Marcus Reyes": {
+            summary: "Order for Marcus Reyes",
             value: {
-                userId: "9188881d-1754-4070-9c80-7e7218987e3d",
+                userId: "85e0881d-bca4-4d2a-a3ef-4dc563fd016d",
                 products: [{
-                    id: "28f582e1-22ac-4912-9f15-9527a273d0a4"
+                    id: "0f419499-7d1d-478c-82fd-2b36332fbaf1"
                 }, {
-                    id: "bee8b7a4-532c-4dd7-8b27-34280803ed70"
+                    id: "09ab699d-8acb-4a38-b9d1-aaa686b18435"
                 }, {
-                    id: "621a467d-2511-4494-a9f9-045487d7767c"
+                    id: "105129b6-ca39-44c5-be7f-3c58c466d9b7"
                 }, {
-                    id: "98396f1e-09b2-43be-9ff7-7c60d3485f33"
+                    id: "45d30a37-976a-4bbc-ae3d-092079779311"
                 }]
             }
         },

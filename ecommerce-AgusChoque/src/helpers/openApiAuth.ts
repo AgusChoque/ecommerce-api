@@ -29,17 +29,7 @@ export const responseSignUpAuth: ApiResponseOptions = {
         "address": "Pasaje Sol 222",
         "country": "Argentina",
         "city": "Salta",
-        "isAdmin": false,
-        "orders": [
-            {
-            "id": "843cfe82-1974-407b-8144-6dc6e15d929e",
-            "date": "22/08/2025"
-            },
-            {
-            "id": "39d6349b-49c3-4b5d-84fc-f91616f0ad34",
-            "date": "25/08/2025"
-            }
-        ]
+        "orders": []
     }
 };
 // Body
@@ -66,12 +56,12 @@ export const bodySignUpAuth: ApiBodyOptions = {
             summary: "Alice Smith",
             value: {
                 email: "alice.smith@example.com",
-                password: "SimplePass.321",
-                passwordConfirm: "SimplePass.321",
+                password: "SimplePass@321",
+                passwordConfirm: "SimplePass@321",
                 name: "Alice Smith",
                 address: "42 Elm Street",
                 phone: 9876543210,
-                country: "USA",
+                country: "United States",
                 city: "New York"
             },
         },
@@ -126,26 +116,19 @@ export const bodySignInAuth: ApiBodyOptions = {
                 password: "SecurePass123!",
             },
           },
-          "Alice Smith": {
-              summary: "Login for Alice Smith",
-              value: {
+        "Alice Smith": {
+            summary: "Login for Alice Smith",
+            value: {
                 email: "alice.smith@example.com",
-                password: "SimplePass.321",
+                password: "SimplePass@321",
               },
-          },
-          "Charlie Brown": {
-              summary: "Login for Charlie Brown",
-              value: {
+        },
+        "Charlie Brown": {
+            summary: "Login for Charlie Brown",
+            value: {
                 email: "charlie.brown@example.fr",
                 password: "Ch@rlie2021!",
-              },
-          },
-          "Admin User": {
-            summary: "Login for admin",
-            value: {
-                email: "admin@mail.com",
-                password: "Admin123.",
-            }
-          }
+            },
+        }
     }
 };

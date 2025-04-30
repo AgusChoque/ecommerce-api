@@ -1,11 +1,9 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { SigninMiddleware } from 'src/middlewares/signin.middleware';
 import { AuthRepository } from './auth.repository';
 import { UsersRepository } from '../users/users.repository';
 import { JwtService } from '@nestjs/jwt';
-import { UsersModule } from '../users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/entities/User.entity';
 
@@ -14,8 +12,4 @@ import { User } from '../users/entities/User.entity';
   controllers: [AuthController],
   providers: [AuthService, AuthRepository, UsersRepository, JwtService]
 })
-export class AuthModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-      consumer.apply(SigninMiddleware).forRoutes({ path: "auth/signin", method: RequestMethod.POST });
-  };
-};
+export class AuthModule {};
