@@ -32,7 +32,10 @@ export class ProductsController {
     // OPEN API
     @ApiOperation({ summary: 'Perform the preloading of products.' })
     @ApiResponse(responseGetSeederProduct)
+    @ApiBearerAuth()
     // HTTP METHOD
+    @Roles(Role.Admin)
+    @UseGuards(AuthGuard, RolesGuard)
     @HttpCode(201)
     @Get("seeder")
     // HANDLER

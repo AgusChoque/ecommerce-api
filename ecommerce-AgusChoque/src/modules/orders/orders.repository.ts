@@ -25,7 +25,19 @@ export class OrdersRepository {
         const order: Order | null = await this.ordersDbRepository.findOne({
             where: { id },
             relations: {
-                orderDetail: { products: { category: true } }
+                orderDetail: { products: { category: true } },
+                user: true
+            },
+            select: {
+                user: {
+                    address: true,
+                    city: true,
+                    country: true,
+                    email: true,
+                    id: true,
+                    name: true,
+                    phone: true
+                }
             }
         });
         if(!order) throw new NotFoundException("Order not found.");
